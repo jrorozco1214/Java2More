@@ -1,0 +1,3 @@
+Food 12.50
+Clothes 13.50
+Extra 15.80
