@@ -15,7 +15,7 @@ public Team(String name, String color){
     this.color = color;
     }
 
-public String toString(){
+public String toString(){ //in order to convert from class name and memory adddress you have to use a toString method to convert it
     return "The team name is: " + this.name + "\n" + "The team color is: " + this.color;
     }
     
