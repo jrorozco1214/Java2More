@@ -1,6 +1,5 @@
 package Temperature;
 import java.util.Scanner;
-import Temperature.Temperatures;
 
 
 public class TempConv {
