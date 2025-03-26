@@ -1,0 +1,3 @@
+Squats 1 5 7 8
+Curls 10 7 5 2
+Press 12 14 8 2 3
