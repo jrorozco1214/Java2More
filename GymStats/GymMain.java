@@ -19,12 +19,12 @@ public class GymMain {
 
 
             while(sc.hasNextLine()){
-                String line = sc.nextLine();
+                String line = sc.nextLine(); //will read the entire line and categorize the split 
                 String []names = line.split("[^A-Za-z]+");
                 String []nums = line.split("[^0-9]+");
 
                 for(String n: names){
-                    if(!n.isEmpty()){
+                    if(!n.isEmpty()){ //this is used in order to read the values and add them to the array list
                         exNames.add(n);
                     }
                 }
