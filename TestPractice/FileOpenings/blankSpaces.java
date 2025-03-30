@@ -14,7 +14,7 @@ public class blankSpaces {
         
             Scanner sc = new Scanner(f1);
 
-            sc.useDelimiter("\\s+");
+            sc.useDelimiter("\n\n");
 
             try(PrintWriter p1 = new PrintWriter("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\TestPractice\\FileOpenings\\blankTextsTest.txt")){
                 while(sc.hasNext()){
