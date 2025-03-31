@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOError;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -20,17 +21,17 @@ public class March3 {
 
 
         while(sc.hasNextLine()){
-        String line = sc.next();
+        String line = sc.next().trim();
 
         String []words = line.split("[^A-Za-z]+");
         String []nums = line.split("[^0-9]");
 
-        for(String s1: words){
-            p1.println(s1);
-        }
+        for(String w: words){
+            p1.println(w);
+        }   
 
-        for(String s2: nums){
-            p2.println(s2);
+        for(String n: nums){
+            p2.println(n);
         }
         }
     sc.close();
@@ -43,11 +44,11 @@ public class March3 {
             Scanner sc2 = new Scanner(f2);
             Scanner sc3 = new Scanner(f3);
 
-            while(sc2.hasNextLine()){
+            while(sc2.hasNext()){
                 System.out.println(sc2.next());
             }
 
-            while(sc3.hasNextLine()){
+            while(sc3.hasNext()){
                 System.out.println(sc3.next());
             }
 

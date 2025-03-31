@@ -12,22 +12,30 @@ public class March122 {
 
         Scanner sc = new Scanner(f1);
 
-        int total = 0;
-
         while(sc.hasNextLine()){
-        String teams = sc.next();
-        String teamScore = sc.nextLine().trim();
+            String line = sc.next();
+            String num = sc.nextLine().trim();
 
-        String []teamScoreCombined = teamScore.split("[,\\s]+");
-        
-        
-        System.out.print(teams + " ");
-        for(String j: teamScoreCombined){
-            total+= Integer.parseInt(j);
-        }
-        System.out.println(total);
+            String []nums = num.split("[,\\s]+");
+            int min = 100;
+            int max = 0;
+            int total = 0;
+            System.out.print(line + " ");
+            for(int i = 0; i < nums.length; i++){
 
-
+                if(min > Integer.parseInt(nums[i])){
+                    min = Integer.parseInt(nums[i]);
+                }
+                if(max < Integer.parseInt(nums[i])){
+                    max = Integer.parseInt(nums[i]);
+                }
+                total += Integer.parseInt(nums[i]);
+                
+            }
+            System.out.print(min + " ");
+                System.out.print(max + " ");
+                System.out.println(total);
+            
         }
         sc.close();
     }
