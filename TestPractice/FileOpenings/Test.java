@@ -24,8 +24,7 @@ public class Test {
                     }
                 }
             sc.close();
-            File f2 = new File("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\TestPractice\\FileOpenings\\TestReference.txt");
-            PrintWriter pw = new PrintWriter(f2);
+            PrintWriter pw = new PrintWriter(f);
 
             for(String str: s){
                 pw.println(str);

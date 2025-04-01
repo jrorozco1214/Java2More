@@ -3,21 +3,17 @@ package TestPractice.Recursion;
 public class RecursionPractice {
 
     public static void main(String[] args) {
-        System.out.println(find("Mississippi", "sip"));
+        System.out.println(factor(20, 1));
     }
 
-    public static int find(String txt, String str){
-        
-        return find2(txt, str, 0);
-    }
-
-    public static int find2(String txt, String str, int count){
-        if(txt.startsWith(str)){
-            return count;
-        } else if(txt.length() == 0){
-            return 0;
+    public static int factor(int n, int f){
+        if(n == f){
+            return n;
+        } else if(n % f == 0){
+            System.out.println(f);
+            return factor(n, f+1);
         } else {
-            return find2(txt.substring(1), str, count+1);
+            return factor(n, f+1);
         }
     }
 }
