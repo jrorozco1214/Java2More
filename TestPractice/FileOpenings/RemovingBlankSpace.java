@@ -17,11 +17,11 @@ public class RemovingBlankSpace {
     PrintWriter pw = new PrintWriter(new File("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\TestPractice\\FileOpenings\\RemovingBlankSpacerRef.txt"));
 
     while(sc.hasNextLine()){
-        String line = sc.nextLine().trim();
+        String line = sc.nextLine();
 
         if(!line.isEmpty()){
             pw.println(line); 
-        }
+            }
         }
     sc.close();
     pw.close();

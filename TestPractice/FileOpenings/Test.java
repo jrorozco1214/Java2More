@@ -1,42 +1,44 @@
 package TestPractice.FileOpenings;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+import java.util.ArrayList;
+
 public class Test {
     public class Arithmetic {
+
         public static void main(String[] args)
         {
-    
-            if(args.length < 5){
-                System.out.println("Usage: java Arithmetic int1 int2 int3 int4 int5");
-            } else {
-                //System.out.println("8");
-                try
-                {
-                    int max = 0;
-                    int min = Integer.parseInt(args[0]);
-                    int sum = 0;
-    
-                    for(int i = 0; i < 5; i++){
-    
-                        if(max < Integer.parseInt(args[i])){
-                            max = Integer.parseInt(args[i]);
-                        }
-                        
-    
-                        if(min > Integer.parseInt(args[i])){
-                            min = Integer.parseInt(args[i]);
-                        }
-                        
-                        sum += Integer.parseInt(args[i]);
+            try{
+                File f = new File("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\TestPractice\\FileOpenings\\RemovingBlankSpace.txt");
+                Scanner sc = new Scanner(f);
+
+                ArrayList<String> s = new ArrayList<>(); 
+                while(sc.hasNextLine()){
+                    String line = sc.nextLine();
+
+                    if(!line.isEmpty()){
+                        s.add(line);
                     }
-                    System.out.println("max = " + max);
-                    System.out.println("min = " + min);
-                    System.out.println("sum = " + sum);
-                    System.out.println("avg = " + sum / 5.0);
                 }
-                catch(NumberFormatException e){
-                    System.out.println("Usage: java Arithmetic int1 int2 int3 int4 int5");
-                }
+            sc.close();
+            File f2 = new File("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\TestPractice\\FileOpenings\\TestReference.txt");
+            PrintWriter pw = new PrintWriter(f2);
+
+            for(String str: s){
+                pw.println(str);
             }
-        }
+
+            pw.close();
+
+
+            } catch(FileNotFoundException e){
+                e.getMessage();
+            } catch(NullPointerException e){
+                e.getMessage();
+            }
+        }       
     }
 }
