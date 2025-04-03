@@ -3,7 +3,7 @@ package TestPractice.Recursion;
 public class FindingIndexOfString {
     public static void main(String[] args) {
         
-        System.out.println(hIndex("Mississippi", "x"));
+        System.out.println(hIndex("Mississippi", "sip"));
     }
 
     public static int hIndex(String txt, String str){

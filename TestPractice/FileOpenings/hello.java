@@ -1,32 +1,32 @@
 package TestPractice.FileOpenings;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.NoSuchElementException;
 
 public class hello {
-    public static void main(String[] args) throws FileNotFoundException{
-        
-    PrintWriter pw = new PrintWriter("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\TestPractice\\FileOpenings\\hello.txt");
+    public static void main(String[] args) {
 
-    pw.println("Hello World");
+        try{
+            File f1 = new File("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\TestPractice\\FileOpenings\\hello.txt");
 
-    pw.close();
+            PrintWriter p = new PrintWriter(f1);
 
-    File f = new File("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\TestPractice\\FileOpenings\\hello.txt");
+            p.println("Hello World");
+            p.close();
 
-    Scanner sc = new Scanner(f);
+            Scanner sc = new Scanner(f1);
 
-    String s = sc.nextLine();
+            System.out.println(sc.nextLine());
 
-    System.out.println(s);
-
-    sc.close();
-
-
-
-
+            sc.close();
+        } catch(FileNotFoundException e){
+            e.getMessage();
+        } catch(NoSuchElementException e){
+            e.getMessage();
+        }
     }
     
 }

@@ -4,7 +4,7 @@ public class palidrone {
 
     public static void main(String[] args) {
     
-    System.out.priln(Pal("racecar"));
+    System.out.println(Pal("racecar"));
 
     }
 
