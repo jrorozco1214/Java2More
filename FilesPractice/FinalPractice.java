@@ -4,38 +4,51 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class FinalPractice {
 
     public static void main(String[] args) {
+    
+    try {
+        File f = new File("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\FilesPractice\\hello.txt");
+        Scanner sc = new Scanner(f);
 
-    try{
-    File f = new File("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\FilesPractice\\hello.txt");
+        int totalCharacters = 0;
+        int totalWords = 0;
+        int totalLine = 0;
 
-    Scanner sc = new Scanner(f);
-    ArrayList<String> a = new ArrayList<>();
+        sc.useDelimiter("[//s+]");
 
-    while(sc.hasNextLine()){
-        String line = sc.next();
-        String line2 = sc.nextLine().trim();
+        while(sc.hasNext()){
+            String line = sc.next();
 
-        a.add(line + line2);
-    }
+            if(!line.isEmpty()){
+                totalCharacters++;
+            }
+        }
 
-    PrintWriter p = new PrintWriter(f);
+        while(sc.hasNextLine()){
+            String line = sc.next();
 
-    for(String write: a){
-        p.println(write);
-    }
+            if(!line.isEmpty()){
+                totalWords++;
+            }
+        }
 
-    sc.close();
-    p.close();
+        while(sc.hasNextLine()){
+            totalLine++;
+        }
+        System.out.println(totalCharacters);
+        System.out.println(totalWords);
+        System.out.println(totalLine);
+
     } catch(FileNotFoundException e){
         e.getMessage();
+    } catch(NoSuchElementException e){
+        e.getMessage();
     }
-    
-
 
     }
 }
