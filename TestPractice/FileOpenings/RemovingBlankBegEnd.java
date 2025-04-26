@@ -7,45 +7,28 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RemovingBlankBegEnd {
-    public static void main(String[] args) throws FileNotFoundException{
-    File f = new File("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\TestPractice\\FileOpenings\\RemovingBlankBegEnd.txt");
-    
-    Scanner sc = new Scanner(f);
+    public static void main(String[] args) {
+		
+		int array[] = {9, 1, 8, 2, 7, 3, 6, 5, 4};
+		
+		insertionSort(array);
+		
+		for(int i : array) {
+			System.out.print(i + " ");
+		}
+	}
 
-    ArrayList<String> w = new ArrayList<>();
-
-    while(sc.hasNextLine()){
-        w.add(sc.nextLine());
-        }
-    
-    sc.close();
-    int start = 0;
-
-    for(int i = 0; i < w.size(); i++){
-        if(w.get(i).trim().isEmpty()){
-            start++;
-        } else {
-            break;
-            }
-        }
-
-    int end = 0;
-    int end1;
-    
-    for(int i = w.size()-1; i > 0; i--){
-        if(w.get(i).trim().isEmpty()){
-            end++;
-        } else {
-            break;
-            }
-        }
-    end1 = w.size()-1 - end;
-    PrintWriter p = new PrintWriter(f);
-        
-    for(int i = start; i <= end1; i++){
-        System.out.println(w.get(i));
-        p.println(w.get(i));
-        }
-        p.close();
-    }
+	private static void insertionSort(int[] array) {
+		
+		for(int i = 1; i < array.length; i++) {
+			int temp = array[i];
+			int j = i - 1;
+			
+			while(j >= 0 && array[j] > temp) {
+				array[j + 1] = array[j];
+				j--;
+			}
+			array[j + 1] = temp;
+		}
+	}
 }
