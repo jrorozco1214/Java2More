@@ -12,12 +12,22 @@ public class FinalPractice {
 
     public static void main(String[] args) {
     
+    int ar[] = {6, 3 , 9, 2, 1, 5};
+    
+    for(int i = 0; i < ar.length; i ++){
+        int max = 0;
 
-    for(int i = 0; i < 5; i++){
-        for(int j = 0; j <= i; j++){
-            System.out.print("*");
+        for(int j = 0; j < ar.length-i; j++){
+            if(ar[max] < ar[j]){
+                max = j;
             }
-        System.out.println();
         }
+
+        int temp = ar[ar.length-i-1];
+        ar[ar.length-i-1] = ar[max];
+        ar[max] = temp;
+    }
+
+    System.out.println(Arrays.toString(ar));
     }
 }
