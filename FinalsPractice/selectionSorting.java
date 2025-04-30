@@ -1,22 +1,15 @@
-package FilesPractice;
+package FinalsPractice;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
-public class FinalPractice {
+public class selectionSorting {
 
     public static void main(String[] args) {
+    int []ar = {4, 7, 11, 4, 9, 5};
     
-    int ar[] = {6, 3 , 9, 2, 1, 5};
-    
-    for(int i = 0; i < ar.length; i ++){
+    for(int i = 0; i < ar.length; i++){
         int max = 0;
-
+        
         for(int j = 0; j < ar.length-i; j++){
             if(ar[max] < ar[j]){
                 max = j;
@@ -29,5 +22,10 @@ public class FinalPractice {
     }
 
     System.out.println(Arrays.toString(ar));
+    
+
+
+
     }
+    
 }

@@ -1,4 +1,4 @@
-package FilesPractice.PersonTest;
+package FinalsPractice.PersonTest;
 
 import java.util.ArrayList;
 import java.util.Collections;

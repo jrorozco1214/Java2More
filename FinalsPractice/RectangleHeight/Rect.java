@@ -1,4 +1,4 @@
-package FilesPractice.RectangleHeight;
+package FinalsPractice.RectangleHeight;
 
 public class Rect {
     private int width;
