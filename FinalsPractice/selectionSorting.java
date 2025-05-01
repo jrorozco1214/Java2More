@@ -11,7 +11,7 @@ public class selectionSorting {
         int max = 0;
         
         for(int j = 0; j < ar.length-i; j++){
-            if(ar[max] < ar[j]){
+            if(ar[max] > ar[j]){
                 max = j;
             }
         }
