@@ -12,17 +12,29 @@ import java.util.Scanner;
 public class FinalPractice {
 
     public static void main(String[] args) {
-        System.out.println(rep("heeeeello", 'e', 'i'));
-    }
+    
+        try{
+            File f1 = new File("C:\\Users\\jerem\\OneDrive\\Documents\\GitHub\\Java2More\\FinalsPractice\\hello.txt");
+            Scanner sc = new Scanner(f1);
+            ArrayList<String> a = new ArrayList<>();
 
-    public static String rep(String w, char c1, char c2){
+            while(sc.hasNextLine()){
+                String line = sc.nextLine();
 
-        if(w.length() == 0){
-            return "";
-        } else if(w.charAt(0) == c1){
-            return c2 + rep(w.substring(1), c1, c2);
+                if(!line.isEmpty()){
+                    a.add(line);
+                }
+            }
+
+            PrintWriter p = new PrintWriter(f1);
+
+            for(String read: a){
+                p.println(read);
+            }
+            sc.close();
+            p.close();
+        } catch(FileNotFoundException e){
+            e.getMessage();
         }
-        return w.charAt(0) + rep(w.substring(1), c1, c2);
-
     }
 }
