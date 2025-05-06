@@ -11,6 +11,9 @@ public class PersonMain {
     e.add(new Employee("Lauren", 35, 10));
     
     Collections.sort(e, new PersonCompare());
+    Collections.sort(e);
+
+    e.get(0).compareTo(e.get(1));
 
     for(Employee es: e){
         System.out.println(es.toString());
