@@ -9,26 +9,29 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import TestPractice.Recursion.ar;
+
 public class FinalPractice {
 
     public static void main(String[] args) {
 
-    int []ar = {2, 4, 7, 9, 3};
+    int ar[][] = new int[5][5];
 
-    System.out.println(hHelper(ar));
-    }
+    int total = 1;
 
-    public static int hHelper(int[]ar){
-        return sumArray(ar, 0);
-    }
-
-    public static int sumArray(int[] ar, int start){
-
-        if(start == ar.length){
-            return 0;
+    for(int i = 0; i < ar.length; i++){
+        for(int j = 0; j < ar[0].length; j++){
+            ar[i][j] = total;
         }
+    }
+    
+    for(int i = 0; i < ar.length; i++){
+        for(int j = 0; j < ar[0].length; j++){
+            System.out.print(ar[i][j]);
+        }
+        System.out.println();
+    }
 
-        return ar[start] + sumArray(ar, start+1);
 
     }
 }
