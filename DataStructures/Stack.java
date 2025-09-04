@@ -1,4 +1,4 @@
-package StackDataStructure;
+package DataStructures;
 
 import TestPractice.Recursion.ar;
 
