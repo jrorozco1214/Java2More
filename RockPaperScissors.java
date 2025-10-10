@@ -37,10 +37,13 @@ public class RockPaperScissors {
                 continue;
             } else {
                  if(changed_to_integer == rock && randomInt == rock || changed_to_integer == paper && randomInt == paper || changed_to_integer == scissors && randomInt == scissors){
+                    System.out.println("You have tied this round");
                     ties++;
                 } else if(changed_to_integer == rock && randomInt == scissors || changed_to_integer == paper && randomInt == rock || changed_to_integer == scissors && randomInt == paper){
+                    System.out.println("You have won this round");
                     wins++;
                 } else if(randomInt == rock && changed_to_integer == scissors || randomInt == paper && changed_to_integer == rock || randomInt == scissors && changed_to_integer == paper){
+                    System.out.println("You have lost this round");
                     losses++;
                 }
                     System.out.printf("Wins: " + wins + "\n" + "Lost: " + losses + "\n" + "Ties: " + ties  + "\n");
