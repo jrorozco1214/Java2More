@@ -1,8 +1,9 @@
 import java.util.Scanner;
 import java.util.Random;
 
-//assignment 1
-//this was the assignment that was done after taking the quiz
+//Jeremy Orozco
+//Assignment 1
+
 public class RockPaperScissors {
     public static void main(String[] args) {
     
