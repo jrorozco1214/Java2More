@@ -38,7 +38,8 @@ public class LinkedListPractice {
         private int listSize;
 
         public Links(){
-            clear();
+            clear(); //the clear allows you reset the link list back to empty and not create a new one and 
+            //just use the same object
         }
 
         public void clear(){
@@ -135,6 +136,7 @@ public class LinkedListPractice {
 
         linkList.insertAt(linkList, 3, 36);
         linkList.display();
+
     }
     
 }
