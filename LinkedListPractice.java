@@ -106,7 +106,7 @@ public class LinkedListPractice {
                         tail = tail.next();
                     }
                     listSize++;
-                }
+                } 
                 counter++;
                 temp = temp.next();
             }
