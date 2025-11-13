@@ -9,7 +9,7 @@ public class HashMapCustomInsertDeleteSearch {
     private HashMap<Integer, Integer> table;
     private int tableSize;
     //private Random r;
-    private int[] randSeq;
+    //private int[] randSeq;
 
     public CustomHashMap(int size) {
         tableSize = size;
@@ -21,7 +21,7 @@ public class HashMapCustomInsertDeleteSearch {
         // randSeq = new int[tableSize];
         //     Random random = new Random(42); // fixed seed for reproducibility
         //     for (int i = 0; i < tableSize; i++) {
-        //         randSeq[i] = random.nextInt(tableSize);
+        //         randSeq[i] = r.nextInt(tableSize); //r.nextInt(tableSize) will generate up to that table size
         //
         //the for loop will give you pregenerated indexs already such as 
         //randSeq = [10, 1, 0, 4, 3, 2, 7, 3, 2, 6, 5]
@@ -75,7 +75,7 @@ public class HashMapCustomInsertDeleteSearch {
         for (int ci = 0; ci < tableSize; ci++) {
             int index = hash(key, ci);
 
-            if (!table.containsKey(index)) {
+            if (!table.containsKey(index)) { 
                 // Empty slot means key not found
                 return false;
             }

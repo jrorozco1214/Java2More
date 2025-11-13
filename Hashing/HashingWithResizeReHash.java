@@ -24,12 +24,14 @@ public class HashingWithResizeReHash {
         }
 
         public void insert(int key) {
-            if (size + 1 > tableSize * loadFactor) resizeAndRehash();
+            if (size + 1 > tableSize * loadFactor) { //the size will always be 0 this is watch is keeping track of hte size of the map and once it > the tableSize * loadFactor
+                resizeAndRehash();
+            }
             for (int ci = 0; ci < tableSize; ci++) {
                 int index = hash(key, ci);
                 if (!table.containsKey(index)) {
                     table.put(index, key);
-                    size++;
+                    size++; //this is the new thing that is added to keep track of the size
                     System.out.println("Inserted " + key + " at index " + index);
                     return;
                 }
@@ -46,7 +48,8 @@ public class HashingWithResizeReHash {
             System.out.println("Linear Probing Resizing: " + oldSize + " -> " + tableSize);
 
             for (int idx : oldTable.keySet()) { //made the oldTable iterable
-                insert(oldTable.get(idx)); //after the rehashing they will not be in the same indes
+                this.insert(oldTable.get(idx)); //after the rehashing they will not be in the same indices, it will go back into the insert function (IMPORTANT)
+                //the this is refering to the current table that we named in the class which is table
             }
 
 
