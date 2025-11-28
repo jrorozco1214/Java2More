@@ -20,12 +20,12 @@ static class BST {
 
     // INSERT operation
     void insert(int key) {
-        root = insertRec(root, key);
+        root = insertRec(root, key); //remember that this is linked list techincally/ can be thought of as a doubly linked list
     }
 
     Node insertRec(Node root, int key) {
         if (root == null) {
-            root = new Node(key);
+            root = new Node(key); //in insert we're creating new nodes for the numbers
             return root;
         }
 
@@ -61,14 +61,15 @@ static class BST {
     }
 
     Node deleteRec(Node root, int key) {
-        if (root == null)
+        if (root == null){
             return root;
+        }
 
-        if (key < root.key)
+        if (key < root.key){
             root.left = deleteRec(root.left, key);
-        else if (key > root.key)
+        } else if (key > root.key){
             root.right = deleteRec(root.right, key);
-        else {
+        } else {
             // Node with only one child or no child
             if (root.left == null)
                 return root.right;
@@ -105,6 +106,19 @@ static class BST {
             inorderRec(root.right);
         }
     }
+
+    void preOrder(){
+        preOrderRec(root);
+        System.out.println();
+    }
+
+    void preOrderRec(Node root){
+        if(root != null){
+            System.out.print(root.key + " ");
+            preOrderRec(root.left);
+            preOrderRec(root.right);
+        }
+    }
 }
 
 public class Main {
@@ -123,17 +137,21 @@ public class Main {
         System.out.print("Inorder Traversal: ");
         tree.inorder();
 
+         tree.preOrder();
+
         // Search
         System.out.println("Search 40: " + tree.search(40));
         System.out.println("Search 90: " + tree.search(90));
 
         // Delete nodes
-        tree.delete(20);
-        tree.delete(30);
+        // tree.delete(20);
+        // tree.delete(30);
         tree.delete(50);
 
         System.out.print("Inorder After Deletion: ");
         tree.inorder();
+
+        tree.preOrder();
     }
 }
 }
