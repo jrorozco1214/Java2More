@@ -1,3 +1,4 @@
+package DataStructures;
 // AppendDemo.java
 public class AppendDemo {
     static class Link {

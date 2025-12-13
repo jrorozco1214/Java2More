@@ -1,3 +1,4 @@
+package DataStructures;
 import java.util.NoSuchElementException;
 
 import TestPractice.book;
@@ -67,6 +68,22 @@ public class LinkedListPractice {
             listSize++;
             return true;
 
+        }
+
+         public Object remove() {
+            if (curr == tail) {
+                throw new NoSuchElementException("remove(): no current element.");
+            }
+
+            Object it = curr.getElement();
+            curr.setElement(curr.next().getElement());
+
+            if (curr.next() == tail) {
+                tail = curr;
+            }
+            curr.setNext(curr.next().next());
+            listSize--;
+            return it;
         }
 
         public void display(){

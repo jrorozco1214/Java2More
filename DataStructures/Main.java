@@ -1,4 +1,10 @@
+package DataStructures;
 // A simple Queue interface
+
+import LQueue;
+import Link;
+import Queue;
+
 interface Queue<T> {
     boolean enqueue(T item);   // Add element at the rear
     T dequeue();               // Remove element from front

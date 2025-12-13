@@ -1,3 +1,4 @@
+package DataStructures;
 import java.util.NoSuchElementException;
 
 // Interface declaration (assumed)
