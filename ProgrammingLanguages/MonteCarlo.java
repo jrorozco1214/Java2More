@@ -17,7 +17,7 @@ public class MonteCarlo {
 
         //the seed
         SecureRandom rand = new SecureRandom(); //uses SHA1PRNG
-        byte[] seed = rand.generateSeed(50);
+        // byte[] seed = rand.generateSeed(50);
 
         public Coords(){
             x = rand.nextDouble(min, max);
@@ -27,7 +27,7 @@ public class MonteCarlo {
         public String toString(){
             String x = String.valueOf(this.x);
             String y = String.valueOf(this.y);
-            return x + " " + y + " " + seed;
+            return x + " " + y + " ";
         }
 
         public double getCoordX(){
@@ -44,7 +44,7 @@ public class MonteCarlo {
                 double xVlaue = n.get(i).getCoordX();
                 double yValue = n.get(i).getCoordY();
 
-                if(Math.sqrt(Math.pow(xVlaue,2) + Math.pow(yValue,2)) < 1){
+                if(Math.pow(xVlaue,2) + Math.pow(yValue,2) <= 1){
                     totalInside++;
                 }
                 //System.out.println(xVlaue + " " + yValue);
@@ -53,7 +53,7 @@ public class MonteCarlo {
         }
     }
     public static void main(String[] args) {
-        int sample = 1000;
+        int sample = 10000;
         ArrayList<Coords> n = new ArrayList<>();
 
         Coords c = null;
@@ -62,9 +62,9 @@ public class MonteCarlo {
             n.add(c = new Coords());
         }
 
-        for(Coords x: n){
-            System.out.println(x.toString());
-        }
+        // for(Coords x: n){
+        //     System.out.println(x.toString());
+        // }
 
         double totalInside = c.TotalNumberInsideCircle(n, sample);
 
@@ -74,4 +74,7 @@ public class MonteCarlo {
     public static void closeToPI(double totalInside, double sample){
         System.out.printf("π = %f", 4 * totalInside / sample);
     }
+
+    //the less sample we have the less variablity there, if we limit the amount of samples it will not also allow
+    //for a lot of dynamic answers to appear which would restrict it from getting to as close to pi as possible
 }
