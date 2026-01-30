@@ -66,14 +66,10 @@ public class MonteCarlo {
         double totalInside = c.TotalNumberInsideCircle(n, sample);
 
         closeToPI(totalInside, sample);
-        //c.printSeed();
     }
 
     public static void closeToPI(double totalInside, double sample){
         System.out.printf("Language: Java PRNG Type: SecureRandom Seed: ? N: %d ", (int)sample);
         System.out.printf("π = %f \n", (4 * totalInside) / sample);
     }
-    //if we look at the documentations there is not getSeed() there is getSeed(int) but all this does is generates new seed bytes fo rother RNG's
-    //based on these results we can determine that we are not able to get the internal seed fo teh of SecureRandom due to it's encryption
-    //the smaller the sampel
 }
