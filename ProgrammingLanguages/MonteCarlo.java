@@ -1,9 +1,6 @@
 package ProgrammingLanguages;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.awt.Point;
 import java.security.SecureRandom;
 
 public class MonteCarlo {
@@ -15,14 +12,8 @@ public class MonteCarlo {
         private double min = 0.0;
         private double max = 1.0;
 
-        //Setting the size of the array for bytes in which the controsl the size of the seed
-        byte[] seed = new byte[8];
 
-        SecureRandom rand = new SecureRandom(seed); //uses SHA1PRNG
-
-        //SecureRandom rand = new SecureRandom();
-
-        public Coords(){
+        public Coords(SecureRandom rand){
             x = rand.nextDouble(min, max);
             y = rand.nextDouble(min, max);
         }
@@ -50,19 +41,22 @@ public class MonteCarlo {
                 if(Math.pow(xVlaue,2) + Math.pow(yValue,2) <= 1){
                     totalInside++;
                 }
-                //System.out.println(xVlaue + " " + yValue);
             }
+            System.out.println("The total numbers inside the circle: " + totalInside);
             return totalInside;
         }
     }
     public static void main(String[] args) {
-        int sample = 100000;
+        int sample = 1000;
         ArrayList<Coords> n = new ArrayList<>();
+
+        byte[] bytes = new byte[8];
+        SecureRandom rand = new SecureRandom(bytes);
 
         Coords c = null;
 
         for(int i = 0; i < sample; i++){
-            n.add(c = new Coords());
+            n.add(c = new Coords(rand));
         }
 
         // for(Coords x: n){
@@ -76,7 +70,8 @@ public class MonteCarlo {
     }
 
     public static void closeToPI(double totalInside, double sample){
-        System.out.printf("π = %f \n", 4 * totalInside / sample);
+        System.out.printf("Language: Java PRNG Type: SecureRandom Seed: ? N: %d ", (int)sample);
+        System.out.printf("π = %f \n", (4 * totalInside) / sample);
     }
     //if we look at the documentations there is not getSeed() there is getSeed(int) but all this does is generates new seed bytes fo rother RNG's
     //based on these results we can determine that we are not able to get the internal seed fo teh of SecureRandom due to it's encryption
