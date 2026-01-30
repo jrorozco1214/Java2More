@@ -15,10 +15,12 @@ public class MonteCarlo {
         private double min = 0.0;
         private double max = 1.0;
 
-        //the seed
+        //Setting the size of the array for bytes in which the controsl the size of the seed
         byte[] seed = new byte[8];
+
         SecureRandom rand = new SecureRandom(seed); //uses SHA1PRNG
 
+        //SecureRandom rand = new SecureRandom();
 
         public Coords(){
             x = rand.nextDouble(min, max);
@@ -52,17 +54,9 @@ public class MonteCarlo {
             }
             return totalInside;
         }
-
-        public void printSeed(){
-
-            for(byte i: seed){
-                System.out.println(i);
-            }
-            //System.out.println(seed);this is print the array object itself
-        }
     }
     public static void main(String[] args) {
-        int sample = 1000;
+        int sample = 100000;
         ArrayList<Coords> n = new ArrayList<>();
 
         Coords c = null;
@@ -78,16 +72,13 @@ public class MonteCarlo {
         double totalInside = c.TotalNumberInsideCircle(n, sample);
 
         closeToPI(totalInside, sample);
-        c.printSeed();
+        //c.printSeed();
     }
 
     public static void closeToPI(double totalInside, double sample){
         System.out.printf("π = %f \n", 4 * totalInside / sample);
     }
-
-    //the less sample we have the less variablity there, if we limit the amount of samples it will not also allow
-    //for a lot of dynamic answers to appear which would restrict it from getting to as close to pi as possible
     //if we look at the documentations there is not getSeed() there is getSeed(int) but all this does is generates new seed bytes fo rother RNG's
     //based on these results we can determine that we are not able to get the internal seed fo teh of SecureRandom due to it's encryption
-    
+    //the smaller the sampel
 }
