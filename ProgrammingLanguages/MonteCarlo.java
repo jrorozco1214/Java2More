@@ -47,29 +47,26 @@ public class MonteCarlo {
         }
     }
     public static void main(String[] args) {
-        int sample = 1000;
+        int sample = 100;
         ArrayList<Coords> n = new ArrayList<>();
 
-        byte[] bytes = new byte[8];
-        SecureRandom rand = new SecureRandom(bytes);
+        SecureRandom rand = new SecureRandom();
+        int seed = 101; //setting the seed
+        rand.setSeed(seed);
 
         Coords c = null;
 
         for(int i = 0; i < sample; i++){
             n.add(c = new Coords(rand));
         }
-
-        // for(Coords x: n){
-        //     System.out.println(x.toString());
-        // }
-
+        
         double totalInside = c.TotalNumberInsideCircle(n, sample);
 
-        closeToPI(totalInside, sample);
+        closeToPI(totalInside, sample, seed);
     }
 
-    public static void closeToPI(double totalInside, double sample){
-        System.out.printf("Language: Java PRNG Type: SecureRandom Seed: ? N: %d ", (int)sample);
-        System.out.printf("π = %f \n", (4 * totalInside) / sample);
+    public static void closeToPI(double totalInside, double sample, int seed){
+        System.out.printf("Language: Java PRNG Type: SecureRandom Seed: %d N: %d ", seed, (int)sample);
+        System.out.printf("π = %.2f \n", (4 * totalInside) / sample);
     }
 }
