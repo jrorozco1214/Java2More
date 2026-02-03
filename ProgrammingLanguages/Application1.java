@@ -3,7 +3,7 @@ package ProgrammingLanguages;
 import java.util.ArrayList;
 import java.security.SecureRandom;
 
-public class MonteCarlo {
+public class Application1 {
 
     public static class Coords{
         private double x;
