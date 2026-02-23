@@ -1,3 +1,4 @@
+import java.util.Queue;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,7 +7,7 @@ public class opmain {
 
     public static class Processes {
         private int process = 0;
-        private int cpu, disk, tty, deadlock;
+        private int cpu, disk, tty, deadlock, processorTime;
 
         // public Processes(int cpu, int disk, int tty, int deadlock){
         //     if(cpu == 0){
@@ -35,13 +36,12 @@ public class opmain {
         //     process += 1;
         // }
 
+        public void setProcessorTime(int processorTime){
+            this.processorTime = processorTime;
+        }
 
         public void setCpu(int cpu){
-            if(cpu == 0){
-                this.cpu = 0;
-            } else {
-                this.cpu = cpu;
-            }
+            this.cpu = cpu;
         }
 
         public void setDisk(int disk){
@@ -53,7 +53,7 @@ public class opmain {
         }
 
         public void setDeadLock(int deadlock){
-
+            this.deadlock = deadlock;
         }
     } 
 
@@ -65,12 +65,39 @@ public class opmain {
 
         read.useDelimiter("\\n");
 
-        while(read.hasNext()){
-            if(String.valueOf(read) == "INERTACTIVE" || String.valueOf(read) == "REAL-TIME"){
-                Processes p = new Processes();
+        String content = read.next();
 
-                if(String.valueOf(read) == "CPU"){
-                    
+        int tracker = 0;
+
+        Queue<Processes> queues = null;
+
+        int numberOfProcesses = 0;
+
+        while(read.hasNext()){
+            if(content == "INTERACTIVE" || content == "REAL-TIME"){
+                numberOfProcesses++;
+            }
+        }
+
+        for(int i = 0; i < numberOfProcesses; i++){
+                if(content == "INTERACTIVE" || content == "REAL-TIME"){
+
+                while(read.hasNext()){
+                    String reading = read.next();
+                    int value = read.nextInt();
+                    Processes p = new Processes();
+
+                    if(reading == "CPU" || reading == "DISK" || reading == "TTY" || reading == "DEADLOCK"){
+                        p.setCpu(value);
+                        p.setDisk(value);
+                        p.setTTY(value);
+                        p.setDeadLock(value);
+                    } else if(reading == "INTERACTIVE" || reading == "REAL-TIME"){
+                        tracker++;
+                        p.setProcessorTime(tracker);
+                        break;
+                    }
+                queues.add(p);
                 }
             }
         }
