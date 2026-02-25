@@ -7,9 +7,13 @@ import java.io.FileNotFoundException;
 
 public class opmain {
 
+    static enum Status {READY, RUNNING, WAITING, TERMINATED};
+
     public static class Processes implements Comparable<Processes>{
         private String processNames;
         private int cpu, disk, tty, deadline, processorNumber, processorArrivalTime;
+        private int cpuTimeRemaining, startTime, finishTime;
+        private Status s;
 
         public void setProcessNames(String processNames){
             this.processNames = processNames;
@@ -39,6 +43,14 @@ public class opmain {
             this.deadline = deadline;
         }
 
+        public String getProcessNames(){
+            return this.processNames;
+        }
+
+        public void setStatus(Status s){
+            this.s = s;
+        }
+
         @Override
         public int compareTo(opmain.Processes o) {
             return -1;
@@ -48,6 +60,8 @@ public class opmain {
     static Queue<Processes> interactiveQueue = new PriorityQueue<>();
     static Queue<Processes> realtimeQueues = new PriorityQueue<>();
     static Queue<Processes> diskQueues = new PriorityQueue<>();
+
+    static Processes cpu_process = null;
 
     public static void main(String[] args) throws FileNotFoundException {
         
@@ -116,14 +130,57 @@ public class opmain {
         read2.close();
     }
 
-    public static void cpuSimulation(int numberOfProcesses){
+    public static void cpuSimulation(int numberOfProcesses, Queue<Processes> queues){
 
         int size = numberOfProcesses;
+        int timeLapsed = 0;
 
         HashSet<Processes> p = new HashSet<>();
 
         while(p.size() < size){
 
+            for(Processes a: queues){
+
+                if(a.processorArrivalTime == timeLapsed){
+                    if(a.getProcessNames() == "REAL-TIME"){
+                        realtimeQueues.add(a);
+                    } else {
+                        interactiveQueue.add(a);
+                    }
+                }
+
+                if(cpu_process != null && !realtimeQueues.isEmpty() && cpu_process.processNames == "INTERACTIVE"){
+                    cpu_process.cpuTimeRemaining -= 1;
+
+                    if(cpu_process.cpuTimeRemaining > 0){
+                        interactiveQueue.add(cpu_process);
+                    }
+
+                    cpu_process = null;
+                }
+
+                if(cpu_process == null){
+                    if(!realtimeQueues.isEmpty()){
+
+                        beginCpu(realtimeQueues.peek());
+                    } else if(!interactiveQueue.isEmpty()){
+
+                    }
+                }
+                
+            }
         }
+    }
+
+    public static void beginCpu(Processes p){
+        p.s = RUNNING;
+
+        cpu_process = p;
+
+        if(cpu_process.cpuTimeRemaining == -1){
+
+            p.cpuTimeRemaining = p.peek
+        }
+        
     }
 }
