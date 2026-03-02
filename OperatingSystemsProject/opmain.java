@@ -1,7 +1,15 @@
 /*
 Jeremy Orozco
-*/
+Operating Systems Spring 2026
+Due Date: March 6, 2026
+In this program we look at the simulation of CPU scheduling utliziling real-time and interactitve processes,
+along with various types of data structures such as HashMap, HashSet, LinkedLists and Queues. 
+This program was kept all in one java file through the use of static classes.
 
+IMPORTANT
+The user has to mainly put in the file path on line 100 by right clicking on the .txt file and copying the file path
+and adding an extra \ for each \
+*/
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -12,25 +20,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class opmain {
-    static final int NO_DEADLINE = -1;
-    static final int NOT_STARTED = -1;
+    static final int NO_DEADLINE = -1; //global variable used for a process in which does not ahve a deadline
+    static final int NOT_STARTED = -1; //global variable used for a process that has not used the CPU yet
 
     enum Status {READY, RUNNING, WAITING, TERMINATED};
     enum Resource {CPU, DISK, TTY};
 
-    static Queue<Processes> interactiveQueue = new PriorityQueue<>();
-    static Queue<Processes> realtimeQueues = new PriorityQueue<>();
-    static Queue<Processes> diskQueues = new PriorityQueue<>();
+    static Queue<Processes> interactiveQueue = new PriorityQueue<>(); //global used for tracking interactive processes
+    static Queue<Processes> realtimeQueues = new PriorityQueue<>(); //global varibale used for tracking real-time processes
+    static Queue<Processes> diskQueues = new PriorityQueue<>(); //global variable used for tracking disk
 
-    static int timePassed = 0;
-    static int cpuBusyTime = 0;
-    static int diskBusyTime = 0;
-    static int totalDisks = 0;
-    static int totalDisksWait = 0;
+    static int timePassed = 0; //keep track of the current simulation time
+    static int cpuBusyTime = 0; //the work time done by the CPU
+    static int diskBusyTime = 0; //the work time done by the disk
+    static int totalDisks = 0; //number if titak dusj accesess that were made
+    static int totalDisksWait = 0; //the total time waiting and using the disk
 
-    static Processes cpu_process = null;
-    static Processes diskProcess = null;
+    static Processes cpu_process = null; //current CPU
+    static Processes diskProcess = null; //current disk
 
+    //this class is hold a single resource request such asc CPU 100 or DISK 50 read from the input
     public static class Request {
         private Resource type;
         private int duration;
@@ -41,15 +50,20 @@ public class opmain {
         }
     }
 
+    //creation of the object proccesses
     public static class Processes implements Comparable<Processes>{
-        private String processNames;
-        private int processorNumber, processorArrivalTime, startTime, finishTime;
-        private int deadline = NOT_STARTED;
-        private int cpuTimeRemaining = NOT_STARTED;
-        private Status s = Status.READY;
-        private Queue<Request> resourceRequests = new LinkedList<>();
+        private String processNames; //Name of Process: REAL-TIME or INTERACTIVE
+        private int processorNumber; //Process number 1 2 3 etc
+        private int processorArrivalTime; //the time the process first comes in
+        private int startTime; //the time the process first ran
+        private int finishTime; // the time the process finished
+        private int deadline = NOT_STARTED; //only done with real-time processes
+        private int cpuTimeRemaining = NOT_STARTED; //the amount of CPU time that that is remaining in the current burst
+        private Status s = Status.READY; //default status given to processes
+        private Queue<Request> resourceRequests = new LinkedList<>(); //the list of resource requests in order done with Queue Linked List
 
 
+        //setters for each processes and a required compareTo method due to the use of Priority Queue
         public void setProcessNames(String processNames){
             this.processNames = processNames;
         }
@@ -80,14 +94,14 @@ public class opmain {
         }
     }
 
+    //Where the input file is read and the start of the simulation
     public static void main(String[] args) throws FileNotFoundException {
-        
-        File f1 = new File("C:\\Users\\jerem\\Documents\\GitHub\\Java2More\\OperatingSystemsProject\\input.txt"); //
+        // ** IMPORTANT **
+        // ** FILE PATH THAT THE USER NEEDS TO ENTER **
+        File f1 = new File("");
 
+        //First Scanner done with the use of a while loop in order to determine the number of processes
         Scanner read1 = new Scanner(f1);
-
-        Queue<Processes> queues = new PriorityQueue<>();
-
         int numberOfProcesses = 0;
 
         while(read1.hasNext()){
@@ -99,12 +113,15 @@ public class opmain {
 
         read1.close();
 
-        //Second Scanner
+        //Second Scanner done in order to create the object processors with the input
         Scanner read2 = new Scanner(f1);
         int tracker = 0;
+        Queue<Processes> mainQueue = new PriorityQueue<>();
 
         for(int i = 0; i < numberOfProcesses; i++){
             String content2 = read2.next();
+
+                //Conditional that determines whether the Process Object is INTERACTICE or Real-TIME
                 if(content2.equals("INTERACTIVE") || content2.equals("REAL-TIME")){
                     Processes p = new Processes();
 
@@ -114,12 +131,14 @@ public class opmain {
                     p.setProcessorArrivalTime(Integer.parseInt(content2));
                     p.setProcessorNumber(++tracker);
 
+                    //while loop in which determines which Resource Requests belongs to which INTERACTIVE or REAL-TIME Processes
+                    //if another INTERACTIVE OR REAL-TIME Processes is read in the input that previous process will be added to the "queues" queue
                     while(read2.hasNext()){
 
                         content2 = read2.next();
 
                         if(content2.equals("INTERACTIVE") || content2.equals("REAL-TIME")){
-                            queues.add(p);
+                            mainQueue.add(p);
                             p = new Processes();
                             p.setProcessNames(content2);
                             p.setProcessorArrivalTime(Integer.parseInt(read2.nextLine().trim()));
@@ -139,24 +158,33 @@ public class opmain {
                             p.setDeadLine(value);
                         }
                 }
-                queues.add(p);
+                mainQueue.add(p);
                 break;
             }
         }
         read2.close();
-        cpuSimulation(numberOfProcesses, queues);
+        cpuSimulation(numberOfProcesses, mainQueue); //the call to the CPU simulation Method
     }
 
+    /*
+    CPU Simluation Method
+    The cpuSimulation purpose is to handle process arrival, CPU Scheduling, disk I/O, and TTY waits.
+    Overall this method will simulatin of the OS scheduler
+    At the end of the method it will output a Summary Report to a .txt file.
+    The parameters that are passed are the total numberProcesses in which was found in Main() and the main Queue in which
+    has all the processes in it
+    */
     public static void cpuSimulation(int numberOfProcesses, Queue<Processes> queues){
 
         int size = numberOfProcesses;
         int timeLapsed = 0;
 
-        HashMap<Processes, Integer> diskEntryTime = new HashMap<>();
-        HashSet<Processes> finished = new HashSet<>();
+        HashMap<Processes, Integer> diskEntryTime = new HashMap<>(); //keeps trakc of when each process has joined the disk queue
+        HashSet<Processes> finished = new HashSet<>(); //hashset in which determines which processes has been terminated
 
+        //this is the main while loop of the function in which will run until every process has been terminated
         while(finished.size() < size){
-
+                //the for loop will run to see if any processes have arrived and if they are ready put in the queue
                 for(Processes a: queues){
                 if(a.processorArrivalTime <= timeLapsed && a.s == Status.READY){
                     a.s = Status.RUNNING; 
@@ -168,6 +196,7 @@ public class opmain {
                 }
             }
 
+            //This conditional will check to see if a REAL-TIME process is ready to run and stop the interactive process
                 if(cpu_process != null && !realtimeQueues.isEmpty() && cpu_process.processNames.equals("INTERACTIVE")){
 
                     if(cpu_process.cpuTimeRemaining > 0){
@@ -179,6 +208,7 @@ public class opmain {
                     cpu_process = null;
                 }
 
+            //This conditional will assing a new process ot hte cpu if it is currenlty not in use
                 if(cpu_process == null){
                     if(!realtimeQueues.isEmpty()){
                         beginCpu(realtimeQueues.peek(), timeLapsed);
@@ -190,16 +220,19 @@ public class opmain {
                     }
                 }
 
+            //This conditional will move the current CPU process forward by one tick
                 if(cpu_process != null){
                     cpu_process.cpuTimeRemaining--;
-                    cpuBusyTime++;
+                    cpuBusyTime++; //keep track of CPU use
 
                     if(cpu_process.cpuTimeRemaining == 0){
-                        cpu_process.resourceRequests.remove(); //.poll()
+                        cpu_process.resourceRequests.remove(); //removal of the completed CPU request
 
                        if(!cpu_process.resourceRequests.isEmpty()){
-                        Request nextRequest = cpu_process.resourceRequests.peek();
+                        Request nextRequest = cpu_process.resourceRequests.peek(); //getting the next request in the process's queue
 
+                        //these conditionals will chekc to the see if the next resource request is DISK OR TTY
+                        //else next resource request is s CPU burst and result in the requeue of the process
                         if(nextRequest.type == Resource.DISK){
                             cpu_process.s = Status.WAITING;
                             diskEntryTime.put(cpu_process, timeLapsed);
@@ -220,7 +253,7 @@ public class opmain {
                                 interactiveQueue.add(cpu_process);
                             }
                         }
-                       } else {
+                       } else { //if there are no more request then the process will be terminated and added to the finish queue
                         cpu_process.s = Status.TERMINATED;
                         cpu_process.finishTime = timeLapsed;
 
@@ -231,20 +264,23 @@ public class opmain {
                     }
                 }
 
+                //A processes will be added to the disk if it's not in use and the queue is not empty
                 if(diskProcess == null && !diskQueues.isEmpty()){
                     diskProcess = diskQueues.remove();
                     beginDisk(diskProcess, timeLapsed);
                 }
             
+                //allow the current disk process to move forward by one tick 
                 if(diskProcess != null) {
                     diskProcess.resourceRequests.peek().duration--;
-                    diskBusyTime++;
+                    diskBusyTime++; //keep trak of disk use
 
+                    //The disk operation has been completed
                     if(diskProcess.resourceRequests.peek().duration == 0){
                         int enteredTime = diskEntryTime.getOrDefault(diskProcess, timeLapsed);
                         totalDisks += timeLapsed - enteredTime + 1;
 
-                        diskProcess.resourceRequests.remove();
+                        diskProcess.resourceRequests.remove(); //remove the completed disk request
 
                         if(!diskProcess.resourceRequests.isEmpty()){
                             Request nextRequest = diskProcess.resourceRequests.peek();
@@ -259,7 +295,7 @@ public class opmain {
                                     interactiveQueue.add(diskProcess);
                                 }
                             }
-                        } else {
+                        } else { //if there are no more request then the process will be terminated and added to the finish queue
                             diskProcess.s =Status.TERMINATED;
                             diskProcess.finishTime = timeLapsed;
                             System.out.println("Process: " + diskProcess.processorNumber + " (" + diskProcess.processNames + ") terminates at " + timeLapsed);
@@ -268,14 +304,15 @@ public class opmain {
                         diskProcess = null;
                     }
                 }
-                timeLapsed++;
+                timeLapsed++; //increment the simulation clock by one tick
             }
 
-            timePassed = timeLapsed;
+            timePassed = timeLapsed; //keeps track of the simulation time for the calculations
 
-            int completedReal = 0;
-            int missedReal = 0;
-            int completedInteractive = 0;
+            //Where the total number of completed and missed Real, and completed Interactive processes from the mainQueue
+            int completedReal = 0; //number of REAL-TIME Processes finished
+            int missedReal = 0; //number of REAl-TIME Processes missed
+            int completedInteractive = 0; //number of INTERACTIVE Processes finished
 
             for(Processes a: queues){
                 if(a.s == Status.TERMINATED){
@@ -291,14 +328,6 @@ public class opmain {
                 }
             }
 
-            /*
-            if(totaldisk > 0){
-                totalDiskWaitTime * 1.0 / totalDisks
-            } else {
-                totalDiskWaitTime = 0;
-                }
-            */
-
             System.out.printf("\nThe Summary Report\n");
             System.out.println("Real-time processes completed: " + completedReal);
             System.out.printf("Percentage of real-time missed deadline %.2f \n", (missedReal*100.0)/completedReal);
@@ -308,6 +337,14 @@ public class opmain {
             System.out.printf("CPU Utilization: %.2f \n", (cpuBusyTime*100.0)/timePassed);
             System.out.printf("DISK Utilization %.2f \n", (diskBusyTime*100.0)/timePassed);
     }
+    /*
+    beginCpu Method
+    The purpose of this method is to schedule the igven process on the CPU and prepare its CPU burst if it has not executed
+    It will keep any non-CPU requests that are at the head of the queue
+    IF there are no CPU request left then the process will terminate
+    The parameters that are passed are the Process p in which is passed on line 213 or 217 along with the current time which is timeLapsed
+    from the CPU simulation
+    */
 
     public static void beginCpu(Processes p, int currentTime){
         cpu_process = p;
@@ -332,9 +369,14 @@ public class opmain {
         System.out.println("Process: " + p.processorNumber + " (" + p.processNames + ") starts CPU at " + currentTime);
     }
 
+    /*
+    beginDisk Method
+    The purpose of this method is attach the passed process to the disk device and log the event
+    The parameters that are passed are the Process p in which is passed on 269 along with the current time which is timeLapsed
+    from the CPU simulation 
+    */
     public static void beginDisk(Processes p, int currentTime){
         diskProcess = p;
-        totalDisks++;
 
         System.out.println("Process: " + p.processorNumber + " (" + p.processNames + ") disk started at " + currentTime);
     }
