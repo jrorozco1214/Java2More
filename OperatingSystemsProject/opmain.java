@@ -7,8 +7,9 @@ along with various types of data structures such as HashMap, HashSet, LinkedList
 This program was kept all in one java file through the use of static classes.
 
 IMPORTANT
-The user has to mainly put in the file path on line 100 by right clicking on the .txt file and copying the file path
+The user has to manually put in the file path on line 100 by right clicking on the .txt file and copying the file path
 and adding an extra \ for each \
+Also the user has to manually type in the file path on 360 on where he or she wants it to outputed to here is an example C:\\Users\\jerem\\Documents\\GitHub\\Java2More\\OperatingSystemsProject\\output.txt  
 */
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +19,8 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 public class opmain {
     static final int NO_DEADLINE = -1; //global variable used for a process in which does not ahve a deadline
@@ -98,7 +101,7 @@ public class opmain {
     public static void main(String[] args) throws FileNotFoundException {
         // ** IMPORTANT **
         // ** FILE PATH THAT THE USER NEEDS TO ENTER **
-        File f1 = new File("");
+        File f1 = new File("C:\\Users\\jerem\\Documents\\GitHub\\Java2More\\OperatingSystemsProject\\input.txt");
 
         //First Scanner done with the use of a while loop in order to determine the number of processes
         Scanner read1 = new Scanner(f1);
@@ -174,7 +177,7 @@ public class opmain {
     The parameters that are passed are the total numberProcesses in which was found in Main() and the main Queue in which
     has all the processes in it
     */
-    public static void cpuSimulation(int numberOfProcesses, Queue<Processes> queues){
+    public static void cpuSimulation(int numberOfProcesses, Queue<Processes> queues) throws FileNotFoundException{
 
         int size = numberOfProcesses;
         int timeLapsed = 0;
@@ -328,6 +331,11 @@ public class opmain {
                 }
             }
 
+            //Where the summary report will be outputed to a file
+            FileOutputStream output = new FileOutputStream("C:\\Users\\jerem\\Documents\\GitHub\\Java2More\\OperatingSystemsProject\\output.txt");
+            PrintStream stream = new PrintStream(output);
+
+            System.setOut(stream);
             System.out.printf("\nThe Summary Report\n");
             System.out.println("Real-time processes completed: " + completedReal);
             System.out.printf("Percentage of real-time missed deadline %.2f \n", (missedReal*100.0)/completedReal);
@@ -336,6 +344,7 @@ public class opmain {
             System.out.println("Total time elapsed: " + timePassed);
             System.out.printf("CPU Utilization: %.2f \n", (cpuBusyTime*100.0)/timePassed);
             System.out.printf("DISK Utilization %.2f \n", (diskBusyTime*100.0)/timePassed);
+            stream.close();
     }
     /*
     beginCpu Method
