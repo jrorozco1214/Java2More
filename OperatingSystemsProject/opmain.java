@@ -36,10 +36,11 @@ public class opmain {
     static int timePassed = 0; //keep track of the current simulation time
     static int cpuBusyTime = 0; //the work time done by the CPU
     static int diskBusyTime = 0; //the work time done by the disk
-    static int totalDisks = 0; //number if titak dusj accesess that were made
     static int totalDisksWait = 0; //the total time waiting and using the disk
+    static int diskAccessCount = 0; //number of total disk accesses
+    static int diskTotalDuration = 0; //determines the duration for each disk apperation needed for the average
 
-    static Processes cpu_process = null; //current CPU
+    static Processes cpuProcess = null; //current CPU
     static Processes diskProcess = null; //current disk
 
     //this class is hold a single resource request such asc CPU 100 or DISK 50 read from the input
@@ -93,7 +94,7 @@ public class opmain {
 
         @Override
         public int compareTo(opmain.Processes o) {
-            return -1;
+            return Integer.compare(this.processorNumber, o.processorNumber);
         }
     }
 
@@ -161,7 +162,7 @@ public class opmain {
     /*
     CPU Simluation Method
     The cpuSimulation purpose is to handle process arrival, CPU Scheduling, disk I/O, and TTY waits.
-    Overall this method will simulatin of the OS scheduler
+    Overall this method will provide a simulation of the OS scheduler
     At the end of the method it will output a Summary Report to a .txt file.
     The parameters that are passed are the total numberProcesses in which was found in Main() and the main Queue in which
     has all the processes in it
@@ -171,10 +172,13 @@ public class opmain {
         int size = numberOfProcesses;
         int timeLapsed = 0;
 
-        HashMap<Processes, Integer> diskEntryTime = new HashMap<>();
-        HashSet<Processes> finished = new HashSet<>();
+        HashMap<Processes, Integer> diskEntryTime = new HashMap<>(); //will keep track of each process that joins the disk queue
+        HashSet<Processes> finished = new HashSet<>(); //will keep track of which processses has been terminated
 
+        //The purpose of this while loop is that it's the main loop in which will run through processes till they have been all terminated
         while(finished.size() < size){
+            
+            //the purpose of this for loop is that it will see if any processes have arrivated and determine if they are ready to be put into the REAL-TIME or INTERACTIVE queue
             for(Processes a: queues){
                 if(a.processorArrivalTime <= timeLapsed && a.s == Status.READY){
                     a.s = Status.RUNNING; 
@@ -186,50 +190,52 @@ public class opmain {
                 }
             }
 
-            if(cpu_process != null && !realtimeQueues.isEmpty() && cpu_process.processNames.equals("INTERACTIVE")){
-                cpu_process.cpuTimeRemaining -= 1;
+            //This conditional will check to see if a REAL-TIME process is ready to run and stop the interactive process
+            if(cpuProcess != null && !realtimeQueues.isEmpty() && cpuProcess.processNames.equals("INTERACTIVE")){
+                cpuProcess.cpuTimeRemaining -= 1;
 
-                // added a check here because if the preemption decrement brings cpuTimeRemaining
-                // to 0 on the same tick the burst was finishing, we need to handle it like a normal
-                // completion otherwise the process gets requeued with cpuTimeRemaining = 0 and
-                // beginCpu never reloads it causing an infinite loop
-                if(cpu_process.cpuTimeRemaining == 0){
-                    cpu_process.resourceRequests.remove();
 
-                    if(!cpu_process.resourceRequests.isEmpty()){
-                        Request nextRequest = cpu_process.resourceRequests.peek();
+                //The purpose of this conditional is if the cpuTimeRemaining from the decrementation were to be 0 then this would result in a normal burst completetion
+                //this is done because this will not result the process to requeue and causes an infinite loop
+                if(cpuProcess.cpuTimeRemaining == 0){
+                    cpuProcess.resourceRequests.remove();
+
+                    if(!cpuProcess.resourceRequests.isEmpty()){
+                        Request nextRequest = cpuProcess.resourceRequests.peek();
 
                         if(nextRequest.type == Resource.DISK){
-                            cpu_process.s = Status.WAITING;
-                            diskEntryTime.put(cpu_process, timeLapsed);
-                            diskQueues.add(cpu_process);
+                            cpuProcess.s = Status.WAITING;
+                            diskEntryTime.put(cpuProcess, timeLapsed);
+                            diskQueues.add(cpuProcess);
                         } else if(nextRequest.type == Resource.TTY){
-                            cpu_process.s = Status.READY;
-                            cpu_process.processorArrivalTime = timeLapsed + nextRequest.duration;
-                            cpu_process.resourceRequests.remove();
-                            cpu_process.cpuTimeRemaining = NOT_STARTED;
+                            cpuProcess.s = Status.READY;
+                            cpuProcess.processorArrivalTime = timeLapsed + nextRequest.duration;
+                            cpuProcess.resourceRequests.remove();
+                            cpuProcess.cpuTimeRemaining = NOT_STARTED;
                         } else {
-                            // RUNNING not READY so the arrival loop doesnt re-add this process
-                            cpu_process.s = Status.RUNNING;
-                            cpu_process.cpuTimeRemaining = NOT_STARTED;
-                            interactiveQueue.add(cpu_process);
+                            //if the request type were not to be either DISK or TTY then this will put teh process status into RUNNING 
+                            //the purpose of this is to avoid being pick up by the loop again
+                            cpuProcess.s = Status.RUNNING;
+                            cpuProcess.cpuTimeRemaining = NOT_STARTED;
+                            interactiveQueue.add(cpuProcess);
                         }
                     } else {
-                        cpu_process.s = Status.TERMINATED;
-                        cpu_process.finishTime = timeLapsed;
-                        System.out.println("Process: " + cpu_process.processorNumber + " (" + cpu_process.processNames + ") terminates at " + timeLapsed);
-                        finished.add(cpu_process);
+                        cpuProcess.s = Status.TERMINATED;
+                        cpuProcess.finishTime = timeLapsed;
+                        System.out.println("Process: " + cpuProcess.processorNumber + " (" + cpuProcess.processNames + ") terminates at " + timeLapsed);
+                        finished.add(cpuProcess);
                     }
                 } else {
-                    // RUNNING not READY so the arrival loop doesnt re-add this process
-                    cpu_process.s = Status.RUNNING;
-                    interactiveQueue.add(cpu_process);
+                    //Again, here the process is set to RUNNING in order ot avoid being pick up again by the loop
+                    cpuProcess.s = Status.RUNNING;
+                    interactiveQueue.add(cpuProcess);
                 }
 
-                cpu_process = null;
+                cpuProcess = null;
             }
 
-            if(cpu_process == null){
+            //This conditional will provide a new process to the cpu if it is not currently being used
+            if(cpuProcess == null){
                 if(!realtimeQueues.isEmpty()){
                     beginCpu(realtimeQueues.peek(), timeLapsed);
                     realtimeQueues.remove();
@@ -240,67 +246,76 @@ public class opmain {
                 }
             }
 
-            if(cpu_process != null){
-                cpu_process.cpuTimeRemaining--;
-                cpuBusyTime++;
+            //This conditional will move the current CPU process forward by one tick
+            if(cpuProcess != null){
+                cpuProcess.cpuTimeRemaining--;
+                cpuBusyTime++; //track the CPU use 
 
-                if(cpu_process.cpuTimeRemaining == 0){
-                    cpu_process.resourceRequests.remove();
+                if(cpuProcess.cpuTimeRemaining == 0){
+                    cpuProcess.resourceRequests.remove(); //removal of the completed CPU request
 
-                   if(!cpu_process.resourceRequests.isEmpty()){
-                    Request nextRequest = cpu_process.resourceRequests.peek();
+                   if(!cpuProcess.resourceRequests.isEmpty()){
+                    Request nextRequest = cpuProcess.resourceRequests.peek(); //getting the next request in the process's queue
 
+                    //these conditionals below will check to the see if the next resource request is DISK OR TTY
+                    //else next resource request is s CPU burst and result in the requeue of the process
                     if(nextRequest.type == Resource.DISK){
-                        cpu_process.s = Status.WAITING;
-                        diskEntryTime.put(cpu_process, timeLapsed);
-                        diskQueues.add(cpu_process);
+                        cpuProcess.s = Status.WAITING;
+                        diskEntryTime.put(cpuProcess, timeLapsed);
+                        diskQueues.add(cpuProcess);
 
                     } else if(nextRequest.type == Resource.TTY){
-                        cpu_process.s = Status.READY;
-                        cpu_process.processorArrivalTime = timeLapsed + nextRequest.duration;
-                        cpu_process.resourceRequests.remove();
-                        cpu_process.cpuTimeRemaining = NOT_STARTED;
+                        cpuProcess.s = Status.READY;
+                        cpuProcess.processorArrivalTime = timeLapsed + nextRequest.duration;
+                        cpuProcess.resourceRequests.remove();
+                        cpuProcess.cpuTimeRemaining = NOT_STARTED;
                     } else{
-                        cpu_process.s = Status.RUNNING;
-                        cpu_process.cpuTimeRemaining = NOT_STARTED;
+                        //Status will be set to running in order to be picked up by the loop again
+                        cpuProcess.s = Status.RUNNING;
+                        cpuProcess.cpuTimeRemaining = NOT_STARTED;
                         
-                        if(cpu_process.processNames.equals("REAL-TIME")){
-                            realtimeQueues.add(cpu_process);
+                        if(cpuProcess.processNames.equals("REAL-TIME")){
+                            realtimeQueues.add(cpuProcess);
                         } else {
-                            interactiveQueue.add(cpu_process);
+                            interactiveQueue.add(cpuProcess);
                         }
                     }
-                   } else {
-                    cpu_process.s = Status.TERMINATED;
-                    cpu_process.finishTime = timeLapsed;
+                   } else { 
+                    //the process will be terminated and added to the finish set if no more requests take place
+                    cpuProcess.s = Status.TERMINATED;
+                    cpuProcess.finishTime = timeLapsed;
 
-                    System.out.println("Process: " + cpu_process.processorNumber + " (" + cpu_process.processNames + ") terminates at " + timeLapsed);
-                    finished.add(cpu_process);
+                    System.out.println("Process: " + cpuProcess.processorNumber + " (" + cpuProcess.processNames + ") terminates at " + timeLapsed);
+                    finished.add(cpuProcess);
                    }
-                   cpu_process = null;
+                   cpuProcess = null;
                 }
             }
-
+            //A processes will be added to the disk if it's not in use and the queue is not empty
             if(diskProcess == null && !diskQueues.isEmpty()){
                 diskProcess = diskQueues.remove();
                 beginDisk(diskProcess, timeLapsed);
             }
-        
+            //allow the current disk process to move forward by one tick 
             if(diskProcess != null) {
                 diskProcess.resourceRequests.peek().duration--;
                 diskBusyTime++;
 
+                //The disk operation has been completed
                 if(diskProcess.resourceRequests.peek().duration == 0){
                     int enteredTime = diskEntryTime.getOrDefault(diskProcess, timeLapsed);
-                    totalDisks += timeLapsed - enteredTime + 1;
+                    int diskDuration = timeLapsed - enteredTime + 1;
+                    diskAccessCount++;
+                    diskTotalDuration += diskDuration;
 
-                    diskProcess.resourceRequests.remove();
+                    diskProcess.resourceRequests.remove(); //the completed disk request will be removed here
 
                     if(!diskProcess.resourceRequests.isEmpty()){
                         Request nextRequest = diskProcess.resourceRequests.peek();
 
                         if(nextRequest.type == Resource.CPU){
-                            diskProcess.s = Status.RUNNING;
+                            //Status will be set to running in order to be picked up by the loop again
+                            diskProcess.s = Status.RUNNING; 
                             diskProcess.cpuTimeRemaining = NOT_STARTED;
 
                             if(diskProcess.processNames.equals("REAL-TIME")){
@@ -309,7 +324,8 @@ public class opmain {
                                 interactiveQueue.add(diskProcess);
                             }
                         }
-                    } else {
+                    } else { 
+                        //the process will be terminated and added to the finish set if no more requests take place
                         diskProcess.s =Status.TERMINATED;
                         diskProcess.finishTime = timeLapsed;
                         System.out.println("Process: " + diskProcess.processorNumber + " (" + diskProcess.processNames + ") terminates at " + timeLapsed);
@@ -318,14 +334,15 @@ public class opmain {
                     diskProcess = null;
                 }
             }
-            timeLapsed++;
+            timeLapsed++; //will result in the incrementation of the simulation clock
         }
 
-        timePassed = timeLapsed;
+        timePassed = timeLapsed; //storing the simulation time needed for the calculations
 
-        int completedReal = 0;
-        int missedReal = 0;
-        int completedInteractive = 0;
+        //Where the total number of completed and missed Real, and completed Interactive processes from the mainQueue
+        int completedReal = 0; //number of REAL-TIME Processes finished
+        int missedReal = 0; //number of REAl-TIME Processes missed
+        int completedInteractive = 0; //number of INTERACTIVE Processes finished
 
         for(Processes a: queues){
             if(a.s == Status.TERMINATED){
@@ -341,6 +358,7 @@ public class opmain {
             }
         }
 
+        //Where the summary report will be outputed to a file
         FileOutputStream output = new FileOutputStream("C:\\Users\\jerem\\Documents\\GitHub\\Java2More\\OperatingSystemsProject\\output.txt");
         PrintStream stream = new PrintStream(output);
 
@@ -349,10 +367,11 @@ public class opmain {
         System.out.println("Real-time processes completed: " + completedReal);
         System.out.printf("Percentage of real-time missed deadline %.2f \n", (missedReal*100.0)/completedReal);
         System.out.println("Interactive processes completed: " + completedInteractive);
-        System.out.println("Total disk accesses: " + totalDisks);
-        System.out.println("Total time elapsed: " + timePassed);
-        System.out.printf("CPU Utilization: %.2f \n", (cpuBusyTime*100.0)/timePassed);
-        System.out.printf("DISK Utilization %.2f \n", (diskBusyTime*100.0)/timePassed);
+        System.out.println("Total disk accesses: " + diskAccessCount);
+        System.out.println("Average duration of disk accesses: " + (diskAccessCount > 0 ? diskTotalDuration / diskAccessCount : 0) + " ms");
+        System.out.println("Total time elapsed since first process start: " + timePassed + " ms");
+        System.out.printf("CPU Utilization: %.4f \n", (cpuBusyTime*1.0)/timePassed);
+        System.out.printf("DISK Utilization %.4f \n", (diskBusyTime*1.0)/timePassed);
         stream.close();
     }
     /*
@@ -365,7 +384,7 @@ public class opmain {
     */
 
     public static void beginCpu(Processes p, int currentTime){
-        cpu_process = p;
+        cpuProcess = p;
 
         if(p.cpuTimeRemaining == NOT_STARTED){
 
@@ -376,7 +395,7 @@ public class opmain {
             if(p.resourceRequests.isEmpty()){
                 p.s = Status.TERMINATED;
                 p.finishTime = currentTime;
-                cpu_process = null;
+                cpuProcess = null;
                 return;
             }
 
