@@ -20,7 +20,8 @@ When looking at the simulation, the program tracks various types of variables. W
 ### Requirements (IMPORTANT)
 
 * Before running the program, please update the input file path and the output file path (lines 104, 335).
-    * when adding a file path make sure following the correct syntax, for example: C:\\Users\\jerem\\Documents\\GitHub\\Java2More\\OperatingSystemsProject\\test1.txt
+    * when adding a file path make sure following the example provided below
+     * **C:\\Users\\jerem\\Documents\\GitHub\\Java2More\\OperatingSystemsProject\\test1.txt**
 * An input file will be provided in order to put intot he file path
 
 ### Execution
