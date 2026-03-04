@@ -1,9 +1,9 @@
 
 The Summary Report
-Real-time processes completed: 1
+Real-time processes completed: 2
 Percentage of real-time missed deadline 0.00 
-Interactive processes completed: 1
-Total disk accesses: 10
-Total time elapsed: 17258
-CPU Utilization: 1.45 
-DISK Utilization 0.06 
+Interactive processes completed: 2
+Total disk accesses: 150
+Total time elapsed: 567
+CPU Utilization: 50.97 
+DISK Utilization 26.46 
