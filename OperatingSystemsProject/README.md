@@ -22,12 +22,13 @@ When looking at the simulation, the program tracks various types of variables. W
 * Before running the program, please update the input file path and the output file path (lines 104, 335).
     * when adding a file path make sure following the example provided below:
         **C:\\Users\\jerem\\Documents\\GitHub\\Java2More\\OperatingSystemsProject\\test1.txt**
-* An input file will be provided in order to put intot he file path
 
 ### Execution
 To run the program from the command line
 ```
 java opmain.java
 ```
+or you can run it at this provided link
 
+https://onlinegdb.com/lwzN05Y7S
 
