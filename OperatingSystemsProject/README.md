@@ -28,7 +28,7 @@ To run the program from the command line
 ```
 java opmain.java
 ```
-or you can run it at this provided link
+or you can run it at this provided link and **no need to change the file input and output path**
 
 https://onlinegdb.com/lwzN05Y7S
 

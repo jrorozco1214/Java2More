@@ -102,7 +102,7 @@ public class opmain {
     public static void main(String[] args) throws FileNotFoundException {
         // ** IMPORTANT **
         // ** FILE PATH THAT THE USER NEEDS TO ENTER **
-        File f1 = new File("C:\\Users\\jerem\\Documents\\GitHub\\Java2More\\OperatingSystemsProject\\test1.txt");
+        File f1 = new File("");
 
         //First Scanner done with the use of a while loop in order to determine the number of processes
         Scanner read1 = new Scanner(f1);
@@ -359,7 +359,7 @@ public class opmain {
         }
 
         //Where the summary report will be outputed to a file
-        FileOutputStream output = new FileOutputStream("C:\\Users\\jerem\\Documents\\GitHub\\Java2More\\OperatingSystemsProject\\output.txt");
+        FileOutputStream output = new FileOutputStream("");
         PrintStream stream = new PrintStream(output);
 
         System.setOut(stream);
