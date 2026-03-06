@@ -31,3 +31,9 @@ java opmain.java
 or you can run it at this provided link and **no need to change the file input and output path**
 
 https://onlinegdb.com/kUdLA4nTy
+
+
+### Resources
+1. https://kitswas.github.io/CPU-scheduling-simulator/main_8cpp.html
+2. https://www.daniweb.com/programming/software-development/threads/411494/process-scheduling-assignment-need-help
+3. https://github.com/marvinjason/CPUScheduler
