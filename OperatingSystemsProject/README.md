@@ -30,5 +30,4 @@ java opmain.java
 ```
 or you can run it at this provided link and **no need to change the file input and output path**
 
-https://onlinegdb.com/lwzN05Y7S
-
+https://onlinegdb.com/kUdLA4nTy
