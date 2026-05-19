@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,38 +11,51 @@ public class leetCodeMainTest {
 
     public static void main(String[] args) {
 
-        int[] nums = {-1,0,1,2,-1,-4};
+        int []test = {-1,0,1,2,-1,4};
+
+        System.out.println(threeSum(test));
+
+    }
+
+    public static List<List<Integer>> threeSum(int[] nums) {
 
         ArrayList<List<Integer>> result = new ArrayList<>();
 
-        Arrays.sort(nums);
+        for(int i =  0; i < nums.length; i++){
 
-        int j = 1;
-        int k = nums.length-1;
+            for(int j = i + 1; j < nums.length; j++){
 
-        for(int i = 0; i < nums.length; i++){
+                for(int k = j + 1; k < nums.length; k++){
 
-            while(j <= k){
+                    if(nums[i] + nums[j] + nums[k] == 0){
 
-                if(j == k){
-                    j = 1;
-                    break;
+                        result.add(List.of(nums[i], nums[j], nums[k]));
+                    }
                 }
+            }
+        }
 
-                if(nums[i] + nums[j] + nums[k] == 0){
 
-                    result.add(Arrays.asList(nums[i], nums[j], nums[k]));
-                    
-                } else if(nums[i] + nums[j] + nums[k] > 0) {
-                    k--;
+        //lambda function that will compare each using comparator 
+        Comparator <List<Integer>> compare =  (List<Integer> l1, List<Integer> l2) -> {
+            
+            for(int i = 0; i < 3; i++){
+
+                if(l1.get(i) == l2.get(i)){
+                    continue;
+                } else if(l1.get(i) > l2.get(i)){
+                    return 1;
                 } else {
-                    j++;
+                    return -1;
                 }
             }
 
-            j = j+1;
-        }
+            return 0;
+        };
 
-        System.out.println(result);
+        Collections.sort(result, compare);
+
+
+        return result;
     }
 }
