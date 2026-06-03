@@ -1,8 +1,11 @@
 package LeetCodeQuestions;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import TestPractice.Recursion.ar;
 
 public class removingDuplicatesFromSortedArray26 {
 
@@ -13,17 +16,26 @@ public class removingDuplicatesFromSortedArray26 {
     }
 
     public static int removeDuplicates(int[] nums) {
-        
-        Set<Integer> result = new HashSet<>();
 
-        for(int i = 0; i < nums.length; i++){
+        int p1 = 0;
+        int p2 = 1;
 
-            result.add(nums[i]);
+
+        while(p2 != nums.length){
+
+            if(nums[p1] != nums[p2]){
+
+                p1++;
+                nums[p1] = nums[p2];
+            }
+
+            p2++;
+
         }
 
-        System.out.println(result);
+        System.out.println(Arrays.toString(nums));
 
-        return result.size();
+        return p1+1;
     }
     
 }
