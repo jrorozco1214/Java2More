@@ -3,12 +3,12 @@ package LeetCodeQuestions;
 import java.util.List;
 
 public class mergeTwoSortedList21 {
-
-
     public static class ListNode {
         int val;
         ListNode next;
-        ListNode() {}
+        ListNode() {
+            
+        }
         ListNode(int val) { 
             this.val = val; 
         }
@@ -19,20 +19,25 @@ public class mergeTwoSortedList21 {
     }
     public static void main(String[] args) {
 
-        ListNode v1 = new ListNode(1);
-        ListNode v2 = new ListNode(2);
-        ListNode v3 = new ListNode(4);
+        // ListNode v1 = new ListNode(1);
+        // ListNode v2 = new ListNode(2);
+        // ListNode v3 = new ListNode(4);
 
-        v1.next = v2;
-        v2.next = v3;
+        // v1.next = v2;
+        // v2.next = v3;
 
-        ListNode vv1 = new ListNode(1);
-        ListNode vv2 = new ListNode(3);
-        ListNode vv3 = new ListNode(4);
-        vv1.next = vv2;
-        vv2.next = vv3;
+        // ListNode vv1 = new ListNode(1);
+        // ListNode vv2 = new ListNode(3);
+        // ListNode vv3 = new ListNode(4);
+        // vv1.next = vv2;
+        // vv2.next = vv3;
+
+        ListNode v1 = new ListNode();
+        ListNode vv1 = new ListNode(0);
 
         ListNode result = mergeTwoSortedList(v1, vv1);
+
+        System.out.println(result);
     }
 
     public static ListNode mergeTwoSortedList(ListNode list1, ListNode list2){
@@ -42,6 +47,17 @@ public class mergeTwoSortedList21 {
 
         ListNode p1 = list1;
         ListNode p2 = list2;
+
+        if(list1.next == null && list2.next == null) {
+
+            return null;
+        } else if (list1.next == null && list2.next != null) {
+
+            return list2;
+        } else if (list1.next != null && list2.next == null){
+
+            return list1;
+        }
 
         while(p1 != null && p2 != null){
 
