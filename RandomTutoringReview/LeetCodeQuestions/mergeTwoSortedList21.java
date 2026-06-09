@@ -48,6 +48,8 @@ public class mergeTwoSortedList21 {
         ListNode p1 = list1;
         ListNode p2 = list2;
 
+        //check if p1 and p2 are null and return either or 
+
         if(list1.next == null && list2.next == null) {
 
             return null;
