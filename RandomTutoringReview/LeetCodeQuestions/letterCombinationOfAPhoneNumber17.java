@@ -1,55 +1,60 @@
 package LeetCodeQuestions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class letterCombinationOfAPhoneNumber17 {
     public static void main(String[] args) {
         
-        letterCombinations("23");
+        letterCombinations("47");
     }
 
     public static List<String> letterCombinations(String digits) {
 
-        HashMap<Integer, String> letters = new HashMap<>();
+        String[] possibleLetter = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        int[] maxIndices = {3,4};
 
-        int keyIndex = 2;
-        int counter = 0;
+        ArrayList<String> result = new ArrayList<>();
 
-        String lettersTogether = "";
+        String firstWord = "";
 
-        for(char ch = 'a'; ch <= 'z'; ch++){
 
-            if(keyIndex == 7){
+        int[] indexArr = new int[digits.length()];
 
-                lettersTogether = "pqrs";
-                ch = 't';
-                letters.put(keyIndex, lettersTogether);
-                keyIndex++;
-                counter = 0;
-                lettersTogether = "";
-            } else if(keyIndex == 9){
+        boolean keepGoing = true;
 
-                lettersTogether = "wxyz";
-                ch = 'z';
-                letters.put(keyIndex, lettersTogether);
-                keyIndex++;
-                counter = 0;
-                lettersTogether = "";
-            } else if(counter >= 3){
+        while(keepGoing){
 
-                letters.put(keyIndex, lettersTogether);
-                lettersTogether = "";
-                keyIndex++;
-                counter = 0;
-            }
-        
-            lettersTogether = lettersTogether + ch;
+            System.out.println(Arrays.toString(indexArr));
 
-            counter++;
+            int i = digits.length()-1;
+
+            keepGoing = incrementIndexArray(indexArr, maxIndices, i);
+
         }
 
         return null;
+    }
+
+    public static boolean incrementIndexArray(int[] currentIndex, int[] maxIndices, int i){
+
+        if(i < 0){
+
+            return false;
+        }
+
+        if(currentIndex[i]+1 < maxIndices[i]){
+
+            currentIndex[i]++;
+            return true;
+        }
+        
+
+        currentIndex[i] = 0;
+
+        return incrementIndexArray(currentIndex, maxIndices, i-1);
     }
     
 }
