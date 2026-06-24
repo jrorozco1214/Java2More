@@ -1,4 +1,4 @@
-package LeetCodeQuestions;
+
 
 
 public class sameTree100 {

@@ -1,4 +1,4 @@
-package LeetCodeQuestions;
+
 
 public class countGoodNodesInBinaryTree1448 {
 
