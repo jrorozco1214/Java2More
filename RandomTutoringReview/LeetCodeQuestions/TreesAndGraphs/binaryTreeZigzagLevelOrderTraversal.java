@@ -47,11 +47,9 @@ public class binaryTreeZigzagLevelOrderTraversal {
             return result; 
         }
 
-        Deque<TreeNode> queue = new LinkedList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
 
         queue.add(root);
-
-        //boolean switchDirection = true;
 
         int switchDirection = 1;
 
@@ -86,14 +84,20 @@ public class binaryTreeZigzagLevelOrderTraversal {
 
                     Stack<TreeNode> stack = new Stack<>();
 
-                    Queue<TreeNode> tempQ = queue;
+                    Queue<TreeNode> tempQ = new LinkedList<>(queue);
 
                     while(!tempQ.isEmpty()) {
 
                         stack.push(tempQ.remove());
                     }
 
-                    for(TreeNode x: stack){
+                    while(!stack.isEmpty()){
+
+                        temp.add(stack.pop().val);
+                    }
+                } else {
+
+                        for(TreeNode x: queue){
 
                         temp.add(x.val);
                     }
@@ -103,19 +107,49 @@ public class binaryTreeZigzagLevelOrderTraversal {
 
                     break;
                 }
-            
-                for(TreeNode x: queue){
-
-                    temp.add(x.val);
-                }
-
                 
-
-                switchDirection++;
+            switchDirection++;
 
             result.add(temp);
         }
 
         return result;
-    } 
+    }
+    
+    
+    public static List<List<Integer>> zigZag2(TreeNode root){
+
+        List<List<Integer>> list = new LinkedList<>();
+        if(root == null){
+            return list;
+        }
+        
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        boolean even = true;
+        
+        while(!q.isEmpty()){
+            int n = q.size();
+            LinkedList<Integer> subList = new LinkedList<>();
+            
+            for(int i = 0; i < n; i++){
+                TreeNode top = q.poll();
+                
+                if(top.left != null){
+                    q.add(top.left);
+                }
+                if(top.right != null){
+                    q.add(top.right);
+                }
+                if(even)
+                    subList.add(top.val);
+                else
+                    subList.addFirst(top.val);
+            }
+            list.add(subList);
+            even = !even;
+        }
+        
+        return list;
+    }
 }
