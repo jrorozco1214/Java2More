@@ -22,14 +22,35 @@ public class addTwoNumbers21 {
 
             return "ListNode [" + val + ", " + next + "]"; //recursively call for next and will do val + ", " + next again and again
         }
+
+        public static ListNode inputValue(int... array) {
+
+            ListNode head = new ListNode(array[0]);
+            ListNode tail = head;
+
+            for(int i = 1; i < array.length; i++){
+
+                tail.next = new ListNode(array[i]);
+                tail = tail.next;
+            }
+
+            return head;
+        }
     }
 
     public static void main(String[] args) {
         
-        ListNode l1 = new ListNode(2, new ListNode(4, new ListNode(3, null)));
-        ListNode l2 = new ListNode(5, new ListNode(6, new ListNode(4, null)));
+        // ListNode l1 = new ListNode(4, new ListNode(9, null));
+        // ListNode l2 = new ListNode(2, new ListNode(1, null));
 
-        ListNode result = addTwoNumbers(l1, l2);
+        // ListNode result = addTwoNumbers();
+
+        // System.out.println(result.toString());
+
+        ListNode t1 = ListNode.inputValue(9,9,9,9,9,9,9);
+        ListNode t2 = ListNode.inputValue(9,9,9,9);
+
+        ListNode result = addTwoNumbers(t1, t2);
 
         System.out.println(result.toString());
 
@@ -52,9 +73,41 @@ public class addTwoNumbers21 {
             int resultDigit = sum % 10;
             carry = sum / 10;
 
-            //if(carry >= 1)
+            resultTail.next = new ListNode(resultDigit, null);
+            resultTail = resultTail.next;
+
+            n1 = n1.next;
+            n2 = n2.next;
+        }
+
+        while(n1 != null) {
+
+            int sum = carry + n1.val;
+            int resultDigit = sum % 10;
+            carry = sum / 10;
 
             resultTail.next = new ListNode(resultDigit, null);
+            resultTail = resultTail.next;
+
+            n1 = n1.next;
+
+        }
+
+        while(n2 != null){
+
+            int sum = carry + n2.val;
+            int resultDigit = sum % 10;
+            carry = sum / 10;
+
+            resultTail.next = new ListNode(resultDigit, null);
+            resultTail = resultTail.next;
+
+            n2 = n2.next;
+        }
+
+        if(carry >= 1){
+
+            resultTail.next = new ListNode(carry, null);
             resultTail = resultTail.next;
         }
 
