@@ -2,8 +2,7 @@ package LeetCodeQuestions.Hashing;
 
 import java.util.HashMap;
 import java.util.HashSet;
-
-import TestPractice.Recursion.ar;
+import java.util.Set;
 
 public class countingElements1426 {
 
@@ -13,23 +12,17 @@ public class countingElements1426 {
     }
 
     public static int countElements(int[] arr){
-
-        HashMap<Integer,Integer> countOfVal = new HashMap<>();
-
-        for(int i = 0; i < arr.length; i++){
-
-            countOfVal.put(arr[i], 0);
+    
+        Set<Integer> hashSet = new HashSet<>();
+        for (int x : arr) {
+            hashSet.add(x);
         }
-        
-        for(int i = 0; i < countOfVal.size();i++){
-
-            if(countOfVal.containsKey(arr[i])){
-
-                countOfVal.get(arr[i]+1);
+        int count = 0;
+        for (int x : arr) {
+            if (hashSet.contains(x + 1)) {
+                count++;
             }
         }
-
-
-        return 0;
+        return count;
     }
 }
