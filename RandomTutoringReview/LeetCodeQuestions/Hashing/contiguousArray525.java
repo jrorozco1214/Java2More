@@ -3,6 +3,7 @@ package LeetCodeQuestions.Hashing;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class contiguousArray525 {
 
@@ -14,7 +15,7 @@ public class contiguousArray525 {
     public static int findMaxLength(int[] nums) {
 
         int[] editedNums = new int[nums.length];
-        HashMap<Integer, ArrayList<Integer>> sumTracker = new HashMap<>();
+        HashMap<Integer, Integer> sumTracker = new HashMap<>();
 
         for(int i = 0; i < nums.length; i++){
 
@@ -27,21 +28,44 @@ public class contiguousArray525 {
             }
         }
 
-        int sum = 0;
-
-        int tempAns = 0;
         int ans = 0;
+        int curr = 0;
 
-        for(int i = 0; i < nums.length; i++){
+        sumTracker.put(0, -1);
 
-            sum += editedNums[i];
-            sumTracker.computeIfAbsent(sum, k -> new ArrayList<>()).add(i);
+        for(int i = 0; i < editedNums.length; i++){
 
+            curr += editedNums[i];
+
+            if(sumTracker.containsKey(curr)){
+
+                ans = Math.max(ans, i-sumTracker.get(curr));
+            } else{
+
+                sumTracker.put(curr, i);
+            }
         }
 
-        System.out.println(sumTracker);
+        return ans;
+    }
 
+    public static int findMaxLength2(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+        int maxlen = 0, count = 0;
 
-        return 0;
+        for (int i = 0; i < nums.length; i++) {
+
+            count = count + (nums[i] == 1 ? 1 : -1);
+            if (map.containsKey(count)) {
+
+                maxlen = Math.max(maxlen, i - map.get(count));
+            } else {
+
+                map.put(count, i);
+            }
+        }
+        System.out.println(map);
+        return maxlen;
     }
 }
