@@ -21,16 +21,16 @@ public class maxAreaOfIsland695 {
         //     {0,0,1}
         // };
 
-        // int[][] grid = {
-        //     {1}
-        // };
-
         int[][] grid = {
-            {1,1,0,0,0},
-            {1,1,0,0,0},
-            {0,0,0,1,1},
-            {0,0,0,1,1}
+            {0,1}
         };
+
+        // int[][] grid = {
+        //     {1,1,0,0,0},
+        //     {1,1,0,0,0},
+        //     {0,0,0,1,1},
+        //     {0,0,0,1,1}
+        // };
 
         System.out.println(maxAreaOfIsland(grid));
     }
@@ -61,25 +61,29 @@ public class maxAreaOfIsland695 {
         return ans;
     }
 
-    public static boolean valid(int row, int column, int[][]grid){
+    public static boolean valid(int row, int column, int[][]grid){//valid coordinate, can we go into this tile
 
-        return 0 <= row && row < m && 0 <= column && column < n && grid[row][column] == 1;
+        return 0 <= row && row < m && 0 <= column && column < n;
     }
 
     public static void dfs(int row, int column, int[][]grid){
 
-        if(grid[row][column] == 1 && !seen[row][column]){
-            tempAns++;
+        if(grid[row][column] == 0 || seen[row][column]){
+
+            return;
         }
+
+        seen[row][column] = true;
+        tempAns++;
 
         for(int[] direction: directions){
 
             int nextRow = row + direction[0];
             int nextCol = column + direction[1];
 
-            if(valid(nextRow, nextCol, grid) && !seen[nextRow][nextCol]){
+            if(valid(nextRow, nextCol, grid)){
 
-                seen[nextRow][nextCol] = true;
+
                 dfs(nextRow, nextCol, grid);
             }
         }
