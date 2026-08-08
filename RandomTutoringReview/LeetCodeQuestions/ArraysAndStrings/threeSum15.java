@@ -1,57 +1,52 @@
 package LeetCodeQuestions.ArraysAndStrings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class threeSum15 {
 
 
     public static void main(String[] args) {
 
-        System.out.println(threeSum(new int[]{-1,0,1,2,-1,-4}));
+        System.out.println(threeSum(new int[]{0,0,0,0}));
     }
 
     public static List<List<Integer>> threeSum(int[] nums) {
 
-        List<List<Iny>> finalResult = new ArrayList<>();
+        Set<List<Integer>> result = new HashSet<>();
 
-        HashSet<ArrayList<Integer>> result = new HashSet<>();
-
-        ArrayList<Integer> temp;
+        Arrays.sort(nums);
 
         for(int i = 0; i < nums.length; i++) {
 
-            if(i == nums.length - 2) {
-sss
-                break;
-            }
+            int j = i + 1;
+            int k = nums.length-1;
 
-            int j = i+1;
+            while(j < k) {
 
-            while(j < nums.length) {
+                if(nums[i] + nums[j] + nums[k] == 0) {
 
-                int k = j + 1;
-                while(k < nums.length) {
+                    ArrayList<Integer> temp = new ArrayList<>();
+                    temp.add(nums[i]);
+                    temp.add(nums[j]);
+                    temp.add(nums[k]);
+                    result.add(temp);
+                    
+                    break;
+                } else if(nums[i] + nums[j] + nums[k] < 0) {
 
-                    if(nums[i] + nums[j] + nums[k] == 0){
+                    j++;
+                } else {
 
-                        temp = new ArrayList<>();
-                        temp.add(nums[i]);
-                        temp.add(nums[j]);
-                        temp.add(nums[k]);
-
-                        result.add(temp);
-                    }
-                    k++;
+                    k--;
                 }
-                j++;
             }
         }
 
-        System.out.println(result);
-
-        return finalResult;
+        return new ArrayList<>(result);
     }
 }
