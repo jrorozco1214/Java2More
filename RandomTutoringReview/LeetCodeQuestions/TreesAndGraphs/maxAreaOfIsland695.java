@@ -3,35 +3,12 @@ package LeetCodeQuestions.TreesAndGraphs;
 public class maxAreaOfIsland695 {
 
     public static void main(String[] args) {
-        
-        // int [][]grid = {
-        //     {0,0,1,0,0,0,0,1,0,0,0,0,0},
-        //     {0,0,0,0,0,0,0,1,1,1,0,0,0},
-        //     {0,1,1,0,1,0,0,0,0,0,0,0,0},
-        //     {0,1,0,0,1,1,0,0,1,0,1,0,0},
-        //     {0,1,0,0,1,1,0,0,1,1,1,0,0},
-        //     {0,0,0,0,0,0,0,0,0,0,1,0,0},
-        //     {0,0,0,0,0,0,0,1,1,1,0,0,0},
-        //     {0,0,0,0,0,0,0,1,1,0,0,0,0}
-        // };
-
-        // int[][] grid = {
-        //     {0,0,1},
-        //     {1,0,1},
-        //     {0,0,1}
-        // };
 
         int[][] grid = {
-            {0,1}
+            {0,0,1},
+            {1,0,1},
+            {0,0,1}
         };
-
-        // int[][] grid = {
-        //     {1,1,0,0,0},
-        //     {1,1,0,0,0},
-        //     {0,0,0,1,1},
-        //     {0,0,0,1,1}
-        // };
-
         System.out.println(maxAreaOfIsland(grid));
     }
 
@@ -82,7 +59,6 @@ public class maxAreaOfIsland695 {
             int nextCol = column + direction[1];
 
             if(valid(nextRow, nextCol, grid)){
-
 
                 dfs(nextRow, nextCol, grid);
             }
