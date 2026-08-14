@@ -9,21 +9,29 @@ public class wordSearch79 {
                                             {'S', 'F', 'C', 'S'},
                                             {'A', 'D', 'E', 'E'}
         }, "ABCB"));
+
+        System.out.println(exist(new char[][]{
+                                            {'A', 'S', 'T', 'I'},
+                                            {'S', 'T', 'A', 'C'},
+                                            {'A', 'X', 'B', 'L'}
+        }, "STATIC"));
+
+        System.out.println(exist(new char[][]{
+                                            {'a'},
+        }, "a"));
     }
 
     public static boolean[][] visited;
     public static int[][] coords = {{0,1},{1,0},{-1,0},{0,-1}};
     public static int m;
     public static int n;
-    public static int ansCount = 0;
-    public static int temp = 0;
+    public static boolean result = false;
+
 
     public static boolean exist(char[][] board, String word) {
 
         m = board.length;
         n = board[0].length;
-
-        int tempCount = 0;
 
         visited = new boolean[m][n];
 
@@ -33,14 +41,11 @@ public class wordSearch79 {
 
                 if(board[i][j] == word.charAt(0)) {
 
-                    dfs(board, word, i, j, tempCount);
+                    dfs(board, word, i, j, 0);
 
-                    if(ansCount == word.length()) {
+                    if(result) {
 
                         return true;
-                    } else {
-
-                        visited = new boolean[m][n]; 
                     }
                 }
             }
@@ -54,33 +59,38 @@ public class wordSearch79 {
         return 0 <= nextX && nextX < m && 0 <= nextY && nextY < n;
     }
 
-    public static void dfs(char[][]board, String word, int currX, int currY, int tempCount) {
+    public static void dfs(char[][]board, String word, int currX, int currY, int letterIndex) {
 
-        if(tempCount == word.length()){
 
-            ansCount = tempCount;
+        if(word.charAt(letterIndex) != board[currX][currY] || visited[currX][currY]) {
+
             return;
         }
 
-        if(word.charAt(tempCount) != board[currX][currY] || visited[currX][currY]) {
+        if(letterIndex+1 == word.length()){
 
+            result = true;
             return;
         }
         
         visited[currX][currY] = true; 
-        tempCount++;
 
         for(int[] updateCords: coords) {
 
             int nextX = updateCords[0] + currX;
             int nextY = updateCords[1] + currY;
 
-            if(valid(nextX, nextY) && !visited[nextX][nextY]) {
+            if(valid(nextX, nextY)) {
 
-                dfs(board, word, nextX, nextY, tempCount);
+                dfs(board, word, nextX, nextY, letterIndex+1);
+                
+                if(result) {
+
+                    break;
+                }
             }
         }
-        tempCount--;
+        visited[currX][currY] = false;
 
     }
 }
