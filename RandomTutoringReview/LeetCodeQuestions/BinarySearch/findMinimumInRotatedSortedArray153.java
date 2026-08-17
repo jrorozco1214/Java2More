@@ -16,51 +16,22 @@ public class findMinimumInRotatedSortedArray153 {
 
             int mid = left + (right - left) / 2;
 
-            if(nums[mid] > nums[right]) {
+            // if(nums[mid] > nums[right]) {
+
+            //     left = mid + 1;
+            // } else {
+
+            //     right = mid;
+            // }
+
+            if(nums[mid] >= nums[right]) {
 
                 left = mid + 1;
             } else {
 
-                right = mid;
+                right = mid - 1;
             }
         }
-
-        int target = 3;
-
-        int l = 0;
-        int pivot = left;
-        int r = nums.length-1;
-
-        if(nums[pivot] <= target && nums[r] >= pivot){
-
-            while(pivot < r) {
-
-                int mid = pivot + (r - pivot) / 2;
-
-                if(nums[mid] <= target) {
-                    
-                    r = mid + 1;
-                } else {
-
-                    l = mid;
-                }
-            }
-        } else {
-
-            while(l < pivot) {
-
-                int mid = pivot + (r - pivot) / 2;
-
-                if(nums[mid] <= target) {
-                    
-                    r = mid + 1;
-                } else {
-
-                    l = mid;
-                }
-            }
-        }
-
 
         return left;
     }
