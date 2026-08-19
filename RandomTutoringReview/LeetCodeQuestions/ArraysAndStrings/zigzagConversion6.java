@@ -17,10 +17,20 @@ public class zigzagConversion6 {
         int stringIndex = 0;
 
         for(int j = 0; j < zigZag[0].length; j++) {
+          
+            if(stringIndex >= s.length()) {
+
+                    break;
+            }
 
             for(int i = 0; i < zigZag.length; i++){
+              
+                if(stringIndex >= s.length()) {
 
-                if(j % numRows-1 == 0) {
+                    break;
+                }
+
+                if(j % (numRows-1) == 0) {
 
                     zigZag[i][j] = s.charAt(stringIndex);
 
@@ -42,11 +52,27 @@ public class zigzagConversion6 {
                         stringIndex++;
                     } else {
 
-                        zigZag[i][j] = 'x';
+                        zigZag[i][j] = ' ';
                     }
                 } 
             }
         }
+        
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < zigZag.length; i++) {
+
+            for(int j = 0; j < zigZag[0].length; j++) {
+
+                if(zigZag[i][j] != ' ') {
+
+                    sb.append(zigZag[i][j]);
+                }
+            }
+        }
+
+        System.out.println(sb.toString());
+
         return "";
     }
     
