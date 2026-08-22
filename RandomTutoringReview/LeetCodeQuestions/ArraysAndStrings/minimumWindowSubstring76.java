@@ -17,6 +17,13 @@ public class minimumWindowSubstring76 {
     public static String minWindow(String givenString, String target) {
 
         ArrayList<Character> seen = new ArrayList<>();
+        ArrayList<Character> targetChars = new ArrayList<>();
+        
+        for(int i = 0; i < target.length(); i++){
+
+            targetChars.add(target.charAt(i));
+        }
+        
         int left = 0;
 
         int minSize = Integer.MAX_VALUE;
@@ -37,7 +44,24 @@ public class minimumWindowSubstring76 {
             } else if(target.contains(rightLetterCheck) && seen.contains(givenString.charAt(right))) {
 
                 char needToRemove = rightLetterCheck.charAt(0);
-                seen.remove(needToRemove);
+
+                for(int i = 0; i < seen.size(); i++){
+
+                    if(seen.get(i) == needToRemove){
+
+                        seen.remove(i);
+                        break;
+                    }
+                }
+
+                left++;
+
+                while(seen.contains(givenString.charAt(left))){
+
+                    left++;
+                }
+
+                seen.add(rightLetterCheck.charAt(0));
                 rightLetterCheck.deleteCharAt(0);
             } else {
 
@@ -86,5 +110,4 @@ public class minimumWindowSubstring76 {
 
         return result.substring(0);
     }
-    
 }
