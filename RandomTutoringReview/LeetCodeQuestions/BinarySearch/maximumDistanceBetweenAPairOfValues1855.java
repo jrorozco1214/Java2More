@@ -12,7 +12,7 @@ public class maximumDistanceBetweenAPairOfValues1855 {
     public static int maxDistance(int[] nums1, int[] nums2) {
 
         int left = 0;
-        int right = nums2.length-1;
+        int right = nums2.length;
 
         int maxDistance = 0;
 
@@ -20,25 +20,19 @@ public class maximumDistanceBetweenAPairOfValues1855 {
 
             while(left < right) {
 
-                int mid = left + (right - left+1) / 2;
+                int mid = left + (right - left) / 2;
                 
 
-                if(nums1[i] <= nums2[mid]) {
+                if(nums2[mid] < nums1[i]) {
 
-                    left = mid;
+                    right = mid;
                 } else {
 
-                    right = mid - 1;
+                    left = mid + 1;
                 }
-
-                // if(nums2[mid] < nums1[i]){
-                  
-                //     right = mid - 1;
-                // } else {
-                  
-                //   left = mid;
-                // }
             }
+
+            left = left - 1;
 
             if(left > i) {
 
@@ -46,7 +40,7 @@ public class maximumDistanceBetweenAPairOfValues1855 {
             }
             
             left = 0;
-            right = nums2.length-1;
+            right = nums2.length;
         }
 
         return maxDistance;
