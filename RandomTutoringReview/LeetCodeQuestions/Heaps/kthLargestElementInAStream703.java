@@ -1,0 +1,58 @@
+package LeetCodeQuestions.Heaps;
+
+import java.util.PriorityQueue;
+
+public class kthLargestElementInAStream703 {
+
+    PriorityQueue<Integer> pq = new PriorityQueue<>();
+    int k;
+
+    public kthLargestElementInAStream703(int k, int[] nums) {
+
+        this.k = k;
+
+        for(int i = 0; i < nums.length; i++){
+
+            if(i < k){
+
+                pq.add(nums[i]);
+            } else {
+
+                if(nums[i] > pq.peek()){
+
+                    pq.poll();
+                    pq.add(nums[i]);
+                }
+            }
+        }
+    }
+    
+    
+    public int add(int val) {
+
+        if(pq.size() < k){
+
+            pq.add(val);
+        } else if(val > pq.peek()) {
+
+                pq.poll();
+                pq.add(val);
+        }
+        
+        return pq.peek();
+    }
+
+    public static void main(String[] args) {
+
+
+        kthLargestElementInAStream703 k = new kthLargestElementInAStream703(3, new int[]{4,5,2,8});
+
+        System.out.println(k.add(3));
+        System.out.println(k.add(5));
+        System.out.println(k.add(10));
+        System.out.println(k.add(9));
+        System.out.println(k.add(4));
+
+        System.out.print(k.pq);
+    }
+}
